@@ -1,8 +1,9 @@
-/* ============================================================
-  CSS MANUAL PARA O THEME TOGGLE (À PROVA DE "PURGE")
-============================================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-/* A "TRILHA" (O FUNDO) */
 .theme-toggle-track {
   /* Tamanho e forma */
   display: inline-flex;

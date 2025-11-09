@@ -5,11 +5,10 @@ import { ThemeToggle } from "@/components/molecules/theme-toggle"; // Adjust pat
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground">
-      
-      <p className="mb-4">Inicio</p>
-      <ThemeToggle />
+        <p className="mb-4">Contato</p>
+                <p className="mb-4">Contato</p>
+                        <p className="mb-4">Contato</p>
 
-      
     </main>
   );
 }

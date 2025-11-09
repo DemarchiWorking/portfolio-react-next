@@ -1,0 +1,22 @@
+.nav-item {
+  /* Estilos para o <li>, se houver. Ex: */
+  list-style: none; 
+}
+
+/* .nav-link é aplicado no <a> (elemento filho) */
+.nav-link {
+  text-decoration: none;
+  font-size: 16px;
+  color: #c8c8e8;
+  padding: 4px 0px;
+  transition: color 0.3s;
+}
+
+/* O seletor "&.active" vira ".nav-link.active"
+  O seletor "&:hover" vira ".nav-link:hover"
+*/
+.nav-link.active,
+.nav-link:hover {
+  color: #f7f5ff;
+  border-bottom: 2px solid #7250e9;
+}
