@@ -1,3 +1,4 @@
+"use client"; 
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
@@ -12,7 +13,7 @@ interface HeroData {
 
 // --- Dados Mock (Substitua pelos seus dados reais) ---
 const HERO_DATA: HeroData = {
-    name: "Jensen",
+    name: "Antonio Demarchi",
     title: "Software Developer",
     photoUrl: "https://placehold.co/320x320/333/fff?text=Sua+Foto+Aqui", // Placeholder
     resumeUrl: "/resume.pdf",
@@ -45,65 +46,76 @@ const itemVariants: Variants = {
  * Exibe a seção inicial de um portfólio com nome, título, foto e links de ação,
  * utilizando animações Framer Motion.
  */
-
-// ... imports, interfaces e variants (mantidos iguais)
-
 export const Apresentacao = () => {
     return (
+        // O fundo escuro e a altura mínima ocupam a tela
         <motion.section
             id="apresentacao"
-            // REMOVIDO: min-h-screen
-            // ALTERADO: Adicionado pt-32 para dar espaço no topo
-            // REMOVIDO: flex items-center justify-center
-            className="relative bg-[#1a1a1a] text-white overflow-hidden pt-32 pb-20" 
+            // REDUÇÃO DE ALTURA: min-h-[70vh] alterado para min-h-[60vh]
+            // Padding vertical ajustado de py-20 para py-16
+            className="relative bg-[#1a1a1a] text-white overflow-hidden flex items-center justify-center py-16 min-h-[60vh]"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
         >
-            {/* ... Círculos e Chevrons (mantidos iguais) */}
+            {/* CORREÇÃO DE HIDRATAÇÃO: Injeta keyframes com tag <style> nativa para evitar Styled-JSX hash */}
+            <style dangerouslySetInnerHTML={{__html: `
+                /* Classe de animação para o círculo de fundo */
+                @keyframes pulse-slow {
+                    0%, 100% { transform: scale(1) translate(-50%, -50%); opacity: 0.1; }
+                    50% { transform: scale(1.05) translate(-50%, -50%); opacity: 0.15; }
+                }
+                .animate-pulse-slow {
+                    animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+                }
+            `}} />
+            
+            {/* Círculos Abstratos (Aura) - Classes em linha única para consistência */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#ff5733]/10 animate-pulse-slow"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[750px] rounded-full border border-[#ff5733]/20"></div>
+            
+            {/* Chevrons Decorativos na Lateral - Classes em linha única para consistência */}
+            <div className="absolute right-8 top-1/2 transform -translate-y-1/2 text-[#ff5733]/30 text-8xl hidden md:block select-none">
+                &lt;
+            </div>
+            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 text-[#ff5733]/30 text-8xl hidden md:block select-none">
+                &gt;
+            </div>
 
-            {/* CONTAINER PRINCIPAL: Alteramos o alinhamento aqui */}
-            <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-start justify-between w-full z-10">
+
+            <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between w-full z-10">
                 
                 {/* Conteúdo Esquerdo: Texto e Botões */}
-                {/* ALTERADO: Espaçamento de texto ajustado e cor da linha de destaque alterada para a cor primária da imagem (vermelho/laranja escuro) */}
-                <div className="text-left md:w-1/2 space-y-1 md:pr-8"> 
+                <div className="text-center md:text-left md:w-1/2 space-y-4 md:pr-8">
                     
-                    <motion.p variants={itemVariants} className="text-md text-gray-300">
+                    <motion.p variants={itemVariants} className="text-xl text-gray-300">
                         Hello <span className="text-[#ff5733]">.</span>
                     </motion.p>
 
-                    {/* I am Jensen */}
-                    <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-semibold leading-tight text-gray-100">
-                        I am **{HERO_DATA.name}**
-                    </motion.h2>
-
-                    {/* Software Developer (Linha de Destaque) */}
-                    <motion.div variants={itemVariants} className="relative inline-block mt-1">
-                        {/* Linha de Destaque (A linha na imagem é mais curta e fica ABAIXO do título) */}
-                        <h3 className="text-5xl md:text-6xl font-extrabold text-white">
-                            **{HERO_DATA.title}**
-                        </h3>
-                        {/* A linha de destaque na imagem tem a cor primária */}
-                        <span className="absolute left-0 bottom-[-5px] w-2/3 h-1 bg-[#ff5733]"></span>
+                    <motion.div variants={itemVariants} className="relative inline-block">
+                        {/* Linha Laranja/Vermelha de Destaque */}
+                        <span className="absolute left-0 bottom-[-5px] w-16 h-1 bg-[#ff5733]"></span>
+                        <h2 className="text-4xl md:text-5xl font-semibold leading-tight text-gray-100">
+                            I am {HERO_DATA.name}
+                        </h2>
                     </motion.div>
-
+                    
+                    <motion.h3 variants={itemVariants} className="text-5xl md:text-6xl font-extrabold text-white pt-2">
+                        {HERO_DATA.title}
+                    </motion.h3>
 
                     {/* Botões de Ação */}
-                    {/* ALTERADO: Espaçamento para o topo e margem ajustada */}
-                    <motion.div variants={itemVariants} className="mt-8 flex flex-col sm:flex-row justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
+                    <motion.div variants={itemVariants} className="mt-8 flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-8">
                         <motion.a
                             href="#projetos"
-                            // COR do Botão Primário: Ajustada para um tom mais escuro/sutil, como na imagem.
-                            className="px-6 py-2 bg-[#ff5733] text-white font-semibold rounded-md shadow-lg hover:bg-[#e04e2d] transition-colors transform hover:scale-[1.02] flex items-center justify-center text-sm"
+                            className="px-8 py-3 bg-[#ff5733] text-white font-semibold rounded-lg shadow-lg hover:bg-[#e04e2d] transition-colors transform hover:scale-[1.02] flex items-center justify-center"
                         >
                             Got a project? <ArrowRight className="ml-2 w-4 h-4" />
                         </motion.a>
                         <motion.a
                             href={HERO_DATA.resumeUrl}
                             target="_blank"
-                            // COR do Botão Secundário: Ajustada para um contorno mais escuro, quase preto, com texto em um tom de cinza.
-                            className="px-6 py-2 border-2 border-gray-600 text-gray-400 font-semibold rounded-md hover:bg-gray-800 hover:text-white transition-colors transform hover:scale-[1.02] flex items-center justify-center text-sm"
+                            className="px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-black transition-colors transform hover:scale-[1.02] flex items-center justify-center"
                         >
                             My resume
                         </motion.a>
@@ -113,10 +125,21 @@ export const Apresentacao = () => {
                 {/* Conteúdo Direito: Imagem de Perfil */}
                 <motion.div
                     variants={itemVariants}
-                    // ALTERADO: Para alinhar a imagem mais próxima do centro verticalmente, use md:self-center
-                    className="w-full md:w-1/2 mt-12 md:mt-0 flex justify-center md:justify-end md:self-center"
+                    className="w-full md:w-1/2 mt-12 md:mt-0 flex justify-center md:justify-end"
                 >
-                    {/* ... Restante da Div da Imagem (mantida igual) ... */}
+                    <div className="w-64 h-64 md:w-80 md:h-80 relative rounded-full overflow-hidden border-4 border-[#ff5733] shadow-xl bg-gray-700">
+                        {/* Imagem de Perfil */}
+                        <img
+                            src={HERO_DATA.photoUrl}
+                            alt={`Foto de Perfil de ${HERO_DATA.name}`}
+                            className="absolute inset-0 w-full h-full object-cover"
+                        />
+                        {/* Camada de Efeito Abstrato (para replicar a cor na borda) */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[#ff5733]/10 to-transparent flex items-center justify-center">
+                            {/* Círculo interno para replicar o efeito de aura */}
+                            <div className="w-full h-full rounded-full border-4 border-[#ff5733]/20 absolute"></div>
+                        </div>
+                    </div>
                 </motion.div>
             </div>
         </motion.section>

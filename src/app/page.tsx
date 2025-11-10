@@ -2,6 +2,7 @@
 
 //import Apresentacao from "@/components/molecules/Inicio/componente-inicial";
 import { Apresentacao } from "@/components/molecules/Apresentacao/apresentacao";
+import { Barra } from "@/components/molecules/Barra";
 import { ThemeToggle } from "@/components/molecules/theme-toggle"; // Adjust path if needed
 import Image from "next/image";
 
@@ -13,6 +14,7 @@ export default function Home() {
       <main>              
                 <ThemeToggle />   
                 <Apresentacao/>
+                <Barra />
                 { /* Componente de Apresentação
                 <Apresentacao
         name="Seu Nome"
@@ -28,8 +30,8 @@ export default function Home() {
                   
                 </div>
 
-      
-                     <div className="flex">
+          {/* 
+            <div className="flex">
               <div className="w-46 flex-auto">
                 ##########################
                 </div>
@@ -40,9 +42,9 @@ export default function Home() {
                                     width={120} height={60}
                                 />
                 ########################
-
               </div>
-          </div>    
+
+          </div>    */}
       </main>
     </div>
   );
