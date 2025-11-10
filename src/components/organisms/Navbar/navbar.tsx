@@ -28,15 +28,16 @@ export const Navbar = () => {
 
   return (
     <header>
-        <nav className={styles.navbar}>
+        <nav className={`bg-slate-200 dark:bg-slate-900 text-blue-900 ${styles.navbar}`}>
             <Link className={styles.logo} href="/">
-                <Image 
-                    src="/demarchi-logo.png" 
-                    alt="Logo Portfólio" 
-                    width={120} height={60} 
+                <Image
+                    src="/demarchi-logo.png"
+                    alt="Logo Portfólio"
+                    width={120} height={60}
                 />
             </Link>
-            <ul className={`${styles['nav-items']} ${openMenu ? styles.open : ''}`}>                    {items.map((item, index) => (
+            <ul className={`${styles['nav-items']} ${openMenu ? styles.open : ''}`}>                    
+                {items.map((item, index) => (
                     <Navitem
                         key={index}
                         url={item.url}

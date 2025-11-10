@@ -1,14 +1,27 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}"
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",  // Já cobre src/app, src/components, etc.
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",  // Adicione se usar app/ sem src/
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",  // Para Shadcn components
   ],
-  theme: { 
-    extend: {} 
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        background: 'var(--background)',  // Mude para var() no v4 (sem hsl, pois vars são definidas no CSS)
+        foreground: 'var(--foreground)',
+        
+        primary: {
+          DEFAULT: 'var(--primary)',
+          foreground: 'var(--primary-foreground)',
+        },
+        // Adicione mais customizações do Shadcn aqui (ex: card, muted, etc.)
+      },
+    },
   },
-  plugins: [],
+  plugins: [],  // Adicione require('@tailwindcss/typography') se precisar
 };
-
 /*
 module.exports = {
   content: [

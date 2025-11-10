@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@/styles/globals.css";
+import "./globals.css";
 import { ThemeFeature } from "@/features/theme/theme-provider";
 import { Poppins } from "next/font/google";
 import { Navbar } from "@/components/organisms/Navbar";
