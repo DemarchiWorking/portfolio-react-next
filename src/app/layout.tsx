@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeFeature } from "@/features/theme/theme-provider";
 import { Poppins } from "next/font/google";
 import { Navbar } from "@/components/organisms/Navbar";
+import { Footer } from "@/components/organisms/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body className={`${inter.className} ${poppins.className} antialiased bg-background text-foreground`}>
         <Navbar/>
         <ThemeFeature>{children}</ThemeFeature>
+        <Footer/>
       </body>
     </html>
   );

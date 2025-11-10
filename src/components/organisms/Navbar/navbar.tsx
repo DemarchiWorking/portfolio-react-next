@@ -28,7 +28,7 @@ export const Navbar = () => {
 
   return (
     <header>
-        <nav className={`bg-slate-200 dark:bg-slate-900 text-blue-900 ${styles.navbar}`}>
+        <nav className={`bg-blue-900 dark:bg-slate-900 ${styles.navbar}`}>
             <Link className={styles.logo} href="/">
                 <Image
                     src="/demarchi-logo.png"
@@ -36,7 +36,7 @@ export const Navbar = () => {
                     width={120} height={60}
                 />
             </Link>
-            <ul className={`${styles['nav-items']} ${openMenu ? styles.open : ''}`}>                    
+            <ul className={`bg-blue-900 dark:bg-slate-900 ${styles['nav-items']} ${openMenu ? styles.open : ''}`}>                    
                 {items.map((item, index) => (
                     <Navitem
                         key={index}

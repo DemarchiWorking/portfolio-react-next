@@ -10,6 +10,12 @@
   /* Adicione mais vars aqui, ex: --card: 0 0% 100%; --muted: 210 5.9% 92%; etc. (pegue do Shadcn docs) */
 }
 
+/*
+Cores
+Branco: #F9FAFB
+Dark: #111827
+*/
+
 /* Aplique as variáveis nos seletores (fora do @theme) */
 :root {
   --background: 0 0% 100%;
