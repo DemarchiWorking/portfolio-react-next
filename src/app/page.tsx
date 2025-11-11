@@ -3,6 +3,8 @@
 //import Apresentacao from "@/components/molecules/Inicio/componente-inicial";
 import { Apresentacao } from "@/components/molecules/Apresentacao/apresentacao";
 import { Barra } from "@/components/molecules/Barra";
+import Experiencia from "@/components/molecules/Experiencia/experiencia";
+import { Sobre } from "@/components/molecules/Sobre";
 import { ThemeToggle } from "@/components/molecules/theme-toggle"; // Adjust path if needed
 import Image from "next/image";
 
@@ -13,9 +15,12 @@ export default function Home() {
     <div>
       <main>              
                 <Apresentacao/>
-                
-                <ThemeToggle />   
+                <ThemeToggle />
                 <Barra />
+                <Sobre/>
+                <Experiencia/>
+                   
+                
                 { /* Componente de Apresentação
                 <Apresentacao
         name="Seu Nome"

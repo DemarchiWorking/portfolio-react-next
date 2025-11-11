@@ -1,0 +1,232 @@
+"use client";
+
+import React from 'react';
+
+// --- Interfaces de Tipagem ---
+
+// Interface para as props dos ícones SVG inline
+interface TimelineIconProps {
+    className?: string;
+    size?: number;
+    // O spread {...props} nos SVGs exige a inclusão das props SVG padrões
+    [key: string]: string | number | undefined; 
+}
+
+// Interface para o item de experiência
+interface ExperienceItem {
+    id: number;
+    type: 'work' | 'education';
+    ano: string;
+    titulo: string;
+    subtitulo: string;
+    descricao: string;
+    icon: 'FaGraduationCap' | 'FaBriefcase'; // Garante que apenas chaves válidas sejam usadas
+}
+
+// --- Ícones SVG Inline com Tipagem ---
+
+// Ícone para o ponto central da linha do tempo: FaGraduationCap
+const IconGraduationCap: React.FC<TimelineIconProps> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <path d="M21.42 10.98V14L12 19L2.58 14V10.98M12 2L2 7V17L12 22L22 17V7L12 2Z" />
+    </svg>
+);
+// Ícone para o ponto central da linha do tempo: FaBriefcase
+const IconBriefcase: React.FC<TimelineIconProps> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+    </svg>
+);
+
+// Mapeamento dos ícones com Index Signature para permitir acesso por string (data.icon)
+interface IconMapType {
+    [key: string]: React.FC<TimelineIconProps>;
+}
+
+const IconMap: IconMapType = {
+    FaGraduationCap: IconGraduationCap,
+    FaBriefcase: IconBriefcase,
+};
+
+
+// --- Dados de Exemplo ---
+// O Array é tipado usando a interface ExperienceItem
+const experienceData: ExperienceItem[] = [
+    {
+        id: 1,
+        type: 'work',
+        ano: '2020 - Presente',
+        titulo: 'Desenvolvedor React Sênior',
+        subtitulo: 'Tech Solutions Inc.',
+        descricao: 'Liderança técnica e desenvolvimento de front-ends escaláveis utilizando React, TypeScript e Redux/Zustand. Implementação de testes unitários e CI/CD. Mentoria de desenvolvedores juniores.',
+        icon: 'FaBriefcase',
+    },
+    {
+        id: 2,
+        type: 'education',
+        ano: '2016 - 2020',
+        titulo: 'Bacharelado em Ciência da Computação',
+        subtitulo: 'Universidade Federal XYZ',
+        descricao: 'Foco em estruturas de dados, algoritmos avançados e engenharia de software. Trabalho de conclusão sobre otimização de performance em aplicações web.',
+        icon: 'FaGraduationCap',
+    },
+    {
+        id: 3,
+        type: 'work',
+        ano: '2018 - 2020',
+        titulo: 'Desenvolvedor Full Stack Júnior',
+        subtitulo: 'Startup Inovadora Ltda.',
+        descricao: 'Desenvolvimento de APIs RESTful com Node.js e manutenção de interfaces de usuário com React. Participação em todas as fases do ciclo de desenvolvimento de software.',
+        icon: 'FaBriefcase',
+    },
+];
+
+// --- Sub-Componente do Item da Linha do Tempo ---
+
+// Tipando as props do TimelineItem
+interface TimelineItemProps {
+    data: ExperienceItem;
+    isLeft: boolean;
+}
+
+// Cores definidas via HEX para manter a consistência
+const coralDestaque = '#FF584D'; 
+const fundoEscuro = '#192328';
+const fundoClaro = '#12181B'; // Um pouco mais escuro para o fundo
+
+const TimelineItem: React.FC<TimelineItemProps> = ({ data, isLeft }) => {
+    
+    // O IconMap agora é corretamente indexável por data.icon (string)
+    const IconComponent = IconMap[data.icon];
+
+    // Determina a ordem do conteúdo para o layout bifurcado (desktop)
+    const containerClasses = isLeft 
+        ? 'lg:pr-12 lg:text-right' 
+        : 'lg:pl-12 lg:text-left';
+
+    // Para telas pequenas, o layout é sempre de cima para baixo e centralizado (text-left)
+    const mobileClasses = 'text-left mb-10';
+
+    // Classes de borda dinâmicas para o cartão
+    const borderClasses = isLeft 
+        ? 'lg:border-r-0 lg:border-l-2' // Lado Esquerdo: Borda na Esquerda (Desktop)
+        : 'lg:border-l-0 lg:border-r-2'; // Lado Direito: Borda na Direita (Desktop)
+
+    return (
+        <div className={`relative lg:flex ${mobileClasses}`}>
+            
+            {/* Lado Esquerdo - Ocupa metade da largura no desktop (lg:w-1/2) */}
+            <div className={`lg:w-1/2 ${containerClasses}`}>
+                
+                {/* O conteúdo fica visível APENAS se for o lado esquerdo no desktop OU sempre visível no mobile (mobile é tratado no final) */}
+                <div className={`
+                    p-6 rounded-lg shadow-xl border-t-2 border-b-2 border-gray-700/50 
+                    lg:border-t-0 lg:border-b-0
+                    hover:border-[#FF584D] transition-colors duration-300
+                    ${isLeft ? 'lg:mr-auto' : 'lg:ml-auto hidden'}
+                    ${borderClasses}
+                `} style={{ backgroundColor: fundoEscuro }}>
+                    <p className="text-sm font-semibold mb-1" style={{ color: coralDestaque }}>{data.ano}</p>
+                    <h3 className="text-xl font-bold text-white mb-1">{data.titulo}</h3>
+                    <p className="text-md font-medium text-gray-400 mb-3">{data.subtitulo}</p>
+                    <p className="text-gray-400 text-sm leading-relaxed">{data.descricao}</p>
+                </div>
+            </div>
+
+            {/* Coluna Central da Linha do Tempo (Desktop) */}
+            {/* O ponto e a linha vertical central são tratados por aqui em desktop */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 hidden lg:block" style={{ backgroundColor: 'rgba(107, 114, 128, 0.5)' }}>
+                {/* Linha Central Vertical (Desktop) */}
+            </div>
+            
+            {/* O Ponto (Dot) com Ícone - Fixo no centro em Desktop */}
+            {/* Usamos o 'z-20' para que o ponto fique sempre acima da linha central */}
+            <div className="lg:absolute lg:top-0 lg:left-1/2 lg:transform lg:-translate-x-1/2 mt-1 lg:mt-0 z-20">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center border-2 shadow-lg"
+                     style={{ 
+                         borderColor: coralDestaque, 
+                         backgroundColor: fundoEscuro, 
+                         color: coralDestaque
+                     }}>
+                    {IconComponent && <IconComponent size={18} />}
+                </div>
+            </div>
+
+            {/* Lado Direito - Ocupa metade da largura no desktop (lg:w-1/2) */}
+            <div className={`lg:w-1/2 ${containerClasses}`}>
+                {/* O conteúdo fica visível APENAS se for o lado direito no desktop */}
+                <div className={`
+                    p-6 rounded-lg shadow-xl border-t-2 border-b-2 border-gray-700/50 
+                    lg:border-t-0 lg:border-b-0
+                    hover:border-[#FF584D] transition-colors duration-300
+                    ${!isLeft ? 'lg:ml-auto' : 'lg:mr-auto hidden'}
+                    ${borderClasses}
+                `} style={{ backgroundColor: fundoEscuro }}>
+                    <p className="text-sm font-semibold mb-1" style={{ color: coralDestaque }}>{data.ano}</p>
+                    <h3 className="text-xl font-bold text-white mb-1">{data.titulo}</h3>
+                    <p className="text-md font-medium text-gray-400 mb-3">{data.subtitulo}</p>
+                    <p className="text-gray-400 text-sm leading-relaxed">{data.descricao}</p>
+                </div>
+            </div>
+
+            {/* Ajuste para o Mobile: Garante que o bloco de conteúdo móvel sempre apareça e tenha um indicador de timeline */}
+            <div className="lg:hidden w-full mt-4 flex">
+                {/* Linha Vertical Mobile */}
+                <div className="flex flex-col items-center mr-4">
+                    <div className="w-0.5 h-full" style={{ backgroundColor: coralDestaque }}></div>
+                </div>
+                
+                {/* Conteúdo Mobile */}
+                <div className={`p-6 rounded-lg shadow-xl border-l-2 border-gray-700/50 flex-grow`} style={{ backgroundColor: fundoEscuro, borderColor: coralDestaque }}>
+                    <p className="text-sm font-semibold mb-1" style={{ color: coralDestaque }}>{data.ano}</p>
+                    <h3 className="text-xl font-bold text-white mb-1">{data.titulo}</h3>
+                    <p className="text-md font-medium text-gray-400 mb-3">{data.subtitulo}</p>
+                    <p className="text-gray-400 text-sm leading-relaxed">{data.descricao}</p>
+                </div>
+            </div>
+
+        </div>
+    );
+};
+
+// --- Componente Principal ---
+export const Experiencia = () => {
+    return (
+        <section className={`py-16 md:py-24`} style={{ backgroundColor: fundoClaro }}>
+            <div className="container mx-auto px-6 max-w-7xl">
+                
+                {/* Cabeçalho */}
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl md:text-5xl text-white font-bold mb-4">
+                        Experiência & Educação
+                    </h2>
+                    <p className="text-gray-400 max-w-2xl mx-auto">
+                        Minha jornada profissional e acadêmica, destacando as principais conquistas e aprendizados.
+                    </p>
+                    <div className="w-16 h-1 mx-auto relative mt-4">
+                        <div className="w-full h-full" style={{ backgroundColor: coralDestaque }}></div>
+                        <div className={`absolute left-1/2 transform -translate-x-1/2 -bottom-2 w-3 h-3 rounded-full`} style={{ backgroundColor: coralDestaque }}></div>
+                    </div>
+                </div>
+
+                {/* Container da Linha do Tempo */}
+                <div className="relative">
+                    
+                    {/* Linha Vertical Central (Desktop) */}
+                    <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 hidden lg:block" style={{ backgroundColor: 'rgba(107, 114, 128, 0.5)' }}></div>
+
+                    {experienceData.map((item, index) => (
+                        <TimelineItem
+                            key={item.id}
+                            data={item}
+                            // Alterna o lado do conteúdo: Esquerda, Direita, Esquerda...
+                            isLeft={index % 2 === 0} 
+                        />
+                    ))}
+                </div>
+
+            </div>
+        </section>
+    );
+};

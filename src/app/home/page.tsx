@@ -9,8 +9,8 @@ import { User, Code, Briefcase, Mail, Github, Linkedin, Sun, Moon } from 'lucide
 
 // --- Configuração e Dados Mock (Substitua pelos seus dados reais) ---
 const PORTFOLIO_DATA = {
-    name: "Seu Nome Completo",
-    title: "Engenheiro Frontend Sênior | React & UX/UI Specialist",
+    name: "Antonio Demarchi",
+    title: "Engenheiro Software | .NET | Angular | AWS | DevOps",
     bio: "Mais de 8 anos de experiência transformando wireframes complexos em experiências de usuário fluidas e acessíveis. Especialista em arquitetura de componentes React escaláveis, otimização de performance e liderança técnica.",
     contact: {
         email: "seu.email@exemplo.com",

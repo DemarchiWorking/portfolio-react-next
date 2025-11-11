@@ -2,11 +2,11 @@
 'use client';import React from 'react';
 
 const SKILLS = [
-  'HTML5',
-  'CSS3',
-  'Javascript',
-  'Node.js',
-  'React',
+  'AWS',
+  '.NET (C#)',
+  'Java',
+  'Python',
+  'Angular',
   'Git',
   'Github',
 ];

@@ -1,9 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",  // Para Shadcn components
     "./src/**/*.{js,ts,jsx,tsx,mdx}",  // Já cobre src/app, src/components, etc.
     "./app/**/*.{js,ts,jsx,tsx,mdx}",  // Adicione se usar app/ sem src/
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",  // Para Shadcn components
   ],
   darkMode: 'class',
   theme: {

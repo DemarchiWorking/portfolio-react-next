@@ -20,10 +20,10 @@ const Botao: React.FC<ButtonProps> = ({ children, variant = 'primary', className
 
   const variantClasses = {
     // Botão Laranja/Coral
-    primary: 'bg-blue-800 text-white dark:bg-slate-200 hover:bg-blue-900 dark:text-slate-800 shadow-sombra-coral ',
+    primary: 'bg-blue-800 text-white hover:bg-blue-900 dark:hover:text-slate-900 shadow-sombra-coral hover:shadow-lg flex items-center justify-center cursor-pointer',
     
     // Botão Escuro com Borda
-    secondary: 'bg-slate-200 text-blue-800 hover:bg-slate-300 border border-white/60 hover:bg-gray-800'
+    secondary: 'bg-slate-200 text-black dark:text-slate-800 hover:text-blue-800 hover:bg-slate-300 dark:hover:bg-slate-400 border border-black-500/60 hover:border-blue-800/60 hover:bg-gray-800 cursor-pointer'
   };
 
   // Combina as classes base, as classes da variante e quaisquer classes passadas
