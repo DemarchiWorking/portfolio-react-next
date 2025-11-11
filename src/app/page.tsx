@@ -12,8 +12,9 @@ export default function Home() {
   return (
     <div>
       <main>              
-                <ThemeToggle />   
                 <Apresentacao/>
+                
+                <ThemeToggle />   
                 <Barra />
                 { /* Componente de Apresentação
                 <Apresentacao

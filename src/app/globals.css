@@ -33,12 +33,12 @@ Dark: #111827
   /* Adicione mais para dark mode, ajustando valores para contraste */
 }
 
-/* Resets e estilos globais */
+/* Resets e estilos globais 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+}*/
 
 /* Seus estilos customizados para o ThemeToggle (mantenha como está) */
 .theme-toggle-track {
