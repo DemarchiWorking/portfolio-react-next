@@ -15,7 +15,7 @@ export const Barra = () => {
   return (
     // 1. Container Principal: Classes agora em uma única linha e sem quebras de linha/espaços excessivos
     <div 
-      className="flex flex-row flex-wrap justify-around items-center w-full py-4 px-4 sm:px-8 lg:px-12 shadow-2xl bg-gray-900 dark:bg-gray-900/95 border-t border-gray-800 dark:border-gray-700"
+      className="flex flex-row flex-wrap justify-around items-center w-full py-4 px-4 sm:px-8 lg:px-12 shadow-2xl bg-[#1C398E] dark:bg-gray-900/95 border-t border-blue-700 dark:border-gray-700"
       aria-label="Technical Skills Bar"
     >
       {SKILLS.map((skill, index) => (

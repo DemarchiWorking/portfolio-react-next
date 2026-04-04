@@ -58,7 +58,7 @@ export default function Sobre() {
       {/* Header Fixo/Navegação */}
       <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md px-6 py-4">
         <div className="mx-auto flex max-w-5xl justify-between items-center">
-          <span className="font-bold tracking-tighter text-xl">DEMARCHI<span className="text-primary">.dev</span></span>
+          <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400"> Perfil<span className="text-gray-900 dark:text-white">.dev</span></h1>
           <ThemeToggle />
         </div>
       </nav>
@@ -86,7 +86,7 @@ export default function Sobre() {
                                     download="CurriculoEngenheiroAntonioDemarchi.pdf"
                 >
 
-                <button className="flex items-center gap-2 bg-foreground text-background px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95">
+                <button className="flex items-center gap-2 hover:bg-blue-500 text-gray-900 dark:text-gray-200 bg-foreground text-background px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 border border-blue-500 hover:border-transparent rounded">
                   <Download size={18} /> Baixar CV (PDF)
                 </button>
               </a>
