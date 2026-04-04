@@ -11,6 +11,7 @@ export function ThemeToggle() {
   const isDark = theme === "dark";
 
   return (
+    <div className="bg-gray-900">
     <Switch
       id="theme-toggle"
       checked={isDark}
@@ -36,6 +37,6 @@ export function ThemeToggle() {
         aria-hidden="true"
       />
       <span className="sr-only">Alternar tema</span>
-    </Switch>
+    </Switch></div>
   );
 }

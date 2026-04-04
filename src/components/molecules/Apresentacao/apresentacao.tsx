@@ -16,7 +16,7 @@ interface HeroData {
 const HERO_DATA: HeroData = {
     name: "Antonio Demarchi",
     title: "Software Developer",
-    photoUrl: "terno.png", // Placeholder
+    photoUrl: "perfil-antonio.png", // Placeholder
     resumeUrl: "/resume.pdf",
 };
 
