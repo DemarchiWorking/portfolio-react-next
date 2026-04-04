@@ -1,7 +1,13 @@
 import { ThemeProvider } from "@/lib/theme-provider";
 
 export function ThemeFeature({ children }: { children: React.ReactNode }) {
-  return <ThemeProvider>{children}</ThemeProvider>;
+  return <ThemeProvider 
+      attribute="class" 
+      defaultTheme="dark"      // <-- Isso força o início no Dark
+      enableSystem={false}     // <-- Isso ignora se o Windows/Mac do usuário está no Light
+    >
+      {children}
+    </ThemeProvider>
 }
 // src/features/theme/theme-provider.tsx
 /*"use client";

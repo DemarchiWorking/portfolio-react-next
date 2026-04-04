@@ -34,9 +34,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
-      <body className={`${inter.className} ${poppins.className} antialiased bg-background text-foreground`}>
-        <Navbar/>
+<html lang="pt-BR" className="dark" style={{ colorScheme: 'dark' }} suppressHydrationWarning>      
+<body className={`${inter.className} ${poppins.className} antialiased bg-background text-foreground`}>
+          <Navbar/>
         <ThemeFeature>{children}</ThemeFeature>
         <Footer/>
       </body>

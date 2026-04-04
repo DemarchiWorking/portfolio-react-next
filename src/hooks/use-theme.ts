@@ -12,14 +12,14 @@ export function useThemeMode() {
     setMounted(true);
   }, []);
 
-  const currentTheme = mounted
+const currentTheme = mounted
     ? theme === "system"
-      ? resolvedTheme ?? "light"
+      ? resolvedTheme ?? "dark" 
       : theme
-    : "light";
+    : "dark"; // <-- Fallback inicial agora é dark
 
   const toggle = () => {
-    setTheme(currentTheme === "dark" ? "light" : "dark");
+    setTheme(currentTheme === "dark" ? "light" : "dark" );
   };
 
   return {
