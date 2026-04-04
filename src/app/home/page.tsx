@@ -25,8 +25,8 @@ const PORTFOLIO_DATA = {
         { icon: 'Testing', name: 'Jest, React Testing Library', level: 75 },
     ],
     experience: [
-        { role: "Senior Frontend Engineer", company: "Tech Solutions Co.", period: "2020 - Presente", description: "Liderança técnica em projetos de larga escala, focando em performance (Core Web Vitals) e acessibilidade (WCAG)." },
-        { role: "Frontend Developer", company: "Innovation Studio", period: "2017 - 2020", description: "Desenvolvimento de PWA e migração de jQuery para React, resultando em melhoria de 40% no TTFB." },
+        { role: "Desenvolvedor Backend", company: "nstech", period: "2025 - Presente", description: "Sustentação e evolução de regras de negócio complexas para uma Instituição de Pagamento (IP), garantindo segurança transacional de grandes volumes financeiros." },
+        { role: "Desenvolvedor Backend", company: "Stefanini", period: "2021 - 2025", description: "Construção de APIs RESTful em .NET Core e interfaces em Angular, aplicando rigorosas validações de segurança e análise estática de código via SonarQube." },
     ]
 };
 
