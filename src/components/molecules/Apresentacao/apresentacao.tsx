@@ -126,7 +126,7 @@ export const Apresentacao = () => {
                     </motion.div>*/}
                     <motion.div>
                             <div className="flex space-x-4">
-                                <a href="https://github.com/DemarchiWorking">
+                                <a href="https://github.com/DemarchiWorking?tab=repositories">
                                     <Botao variant="primary" onClick={() => console.log('Navegar para projetos')}
                                         >Meus projetos  <ArrowRight className="ml-2 w-4" />
                                     </Botao>
