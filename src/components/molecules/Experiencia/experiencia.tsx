@@ -41,7 +41,7 @@ const Experiencia: React.FC = () => {
     {
       year: '2022-2023',
       title: 'Stefanini Group',
-      description: 'Mestrado focado em Interação Humano-Computador.',
+      description: 'Consultor Backend para a equipe do Itaú (Segurança da Informação), atuei no desenvolvimento de soluções de alta criticidade.',
       education: true,
     },
     {

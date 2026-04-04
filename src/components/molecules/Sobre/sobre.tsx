@@ -76,7 +76,7 @@ export const Sobre = () => {
             title: "App Infraestrutura - Kubernetes - Cloud - IaC",
             description: "Permitir o controle de funcionalidades em tempo real (Feature Toggles) para usuários específicos, eliminando o risco e a demora de novos deploys em produção, garantindo a agilidade do time de produto.",
             tags: ["Infraestrutura c/ Código", "Kubernetes", "Docker", "Cloud"],
-            image: "/Desenho.png",
+            image: "/desenho.png",
             linkRepo: "https://github.com/DemarchiWorking/toggle-master-microservice-kubernetes",
             linkLive: "#"
         }
