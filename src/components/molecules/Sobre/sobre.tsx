@@ -70,7 +70,8 @@ export const Sobre = () => {
             tags: ["Angular", "Java", "Tailwind", "Next"],
             image: "/Mobile.png",
             linkRepo: "https://github.com/DemarchiWorking/associacao-moradores-java",
-            linkLive: "#"
+            linkLive: "#",
+            pdf: ""
         },
         {
             title: "App Infraestrutura - Kubernetes - Cloud - IaC",
@@ -78,7 +79,8 @@ export const Sobre = () => {
             tags: ["Infraestrutura c/ Código", "Kubernetes", "Docker", "Cloud"],
             image: "/desenho.png",
             linkRepo: "https://github.com/DemarchiWorking/toggle-master-microservice-kubernetes",
-            linkLive: "#"
+            linkLive: "#",
+            pdf: "/DevOps.pdf"
         }
     ];
 
@@ -162,9 +164,18 @@ export const Sobre = () => {
                                     <a href={projeto.linkRepo} className="flex items-center gap-2 text-white hover:text-coral-destaque transition-colors font-semibold uppercase text-sm tracking-wider">
                                         <FaGithub size={18} /> Repositório
                                     </a>
-                                    <a href={projeto.linkLive} className="flex items-center gap-2 text-white hover:text-coral-destaque transition-colors font-semibold uppercase text-sm tracking-wider">
-                                        <FaExternalLinkAlt size={16} /> Ver Projeto
-                                    </a>
+
+                                {/* Se projeto.pdf for diferente de vazio, mostra o botão */}
+                                    {projeto.pdf !== "" && (
+                                        <a 
+                                            href={projeto.pdf} 
+                                            download 
+                                            className="flex items-center gap-2 text-coral-destaque border border-coral-destaque/40 hover:bg-coral-destaque hover:text-white px-3 py-1 rounded transition-all font-semibold uppercase text-[12px] tracking-wider"
+                                        >
+                                            Download Documentação PDF
+                                        </a>
+                                    )}
+
                                 </div>
                             </div>
                         </div>
@@ -175,3 +186,10 @@ export const Sobre = () => {
         </section>
     );
 };
+                
+
+/*<!-- 
+                                    <a href={projeto.linkLive} className="flex items-center gap-2 text-white hover:text-coral-destaque transition-colors font-semibold uppercase text-sm tracking-wider">
+                                        <FaExternalLinkAlt size={16} /> Ver Projeto
+                                    </a>
+-->*/

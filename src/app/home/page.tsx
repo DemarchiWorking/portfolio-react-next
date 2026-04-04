@@ -1,8 +1,8 @@
 "use client";
 
 import { motion, Variants } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-
+import { ArrowRight, Pointer } from 'lucide-react';
+import { ArrowLeft } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import { User, Code, Briefcase, Mail, Github, Linkedin, Sun, Moon } from 'lucide-react';
@@ -14,15 +14,18 @@ const PORTFOLIO_DATA = {
     bio: "Mais de 8 anos de experiência transformando wireframes complexos em experiências de usuário fluidas e acessíveis. Especialista em arquitetura de componentes React escaláveis, otimização de performance e liderança técnica.",
     contact: {
         email: "seu.email@exemplo.com",
-        github: "https://github.com/seuusuario",
-        linkedin: "https://linkedin.com/in/seuusuario"
+        github: "https://github.com/DemarchiWorking",
+        linkedin: "https://linkedin.com/in/demarchi1"
     },
     skills: [
-        { icon: 'React', name: 'React.js & Next.js', level: 95 },
-        { icon: 'Tailwind', name: 'Tailwind CSS & Design Systems', level: 90 },
-        { icon: 'TS', name: 'TypeScript', level: 85 },
-        { icon: 'Framer', name: 'Framer Motion & UX Animation', level: 90 },
-        { icon: 'Testing', name: 'Jest, React Testing Library', level: 75 },
+        { icon: 'Net', name: '.NET (C#)', level: 95 },
+        { icon: 'Java', name: 'Java', level: 95 },
+        { icon: 'React', name: 'React.js & Next.js', level: 75 },
+        { icon: 'Tailwind', name: 'Angular & Tailwind', level: 80 },
+        { icon: 'Cloud', name: 'DevOps e Cloud', level: 65 },
+        { icon: 'Testing', name: 'Test JUnit', level: 80 },
+        { icon: 'Sql', name: 'Banco de Dados (SQL)', level: 90 },
+        { icon: 'Dados', name: 'Ciência de Dados e Machine Learning', level: 60 },
     ],
     experience: [
         { role: "Desenvolvedor Backend", company: "nstech", period: "2025 - Presente", description: "Sustentação e evolução de regras de negócio complexas para uma Instituição de Pagamento (IP), garantindo segurança transacional de grandes volumes financeiros." },
@@ -59,16 +62,18 @@ const ThemeToggle = () => (
 );
 
 // Componente de Skill Bar
-const SkillBar = () => (
+const SkillBar = ({ name, level }: { name: string; level: number }) => (
     <motion.div variants={itemVariants} className="mb-4">
         <div className="flex justify-between items-center mb-1">
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300"> Antonio D</span>
-            <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">90%</span>
+            {/* Trocado "Antonio D" por {name} */}
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{name}</span>
+            {/* Trocado "90%" por {level}% */}
+            <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">{level}%</span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
             <motion.div
                 initial={{ width: 0 }}
-                animate={{ width: `90%` }}
+                animate={{ width: `${level}%` }} // Usa o valor real para a barra
                 transition={{ duration: 1.5, delay: 0.5 }}
                 className="bg-indigo-500 h-2 rounded-full shadow-md"
             ></motion.div>
@@ -119,7 +124,20 @@ const App = () => {
                     initial="hidden"
                     animate="visible"
                 >
-                    <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-center md:items-start space-y-8 md:space-x-12">
+                <div className='bg-blue-900  pt-10 pb-10 pl-10 pr-10 rounded-xl shadow-lg'>
+        <a href="/">
+          <button 
+            className="group flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors pointer"
+          >
+            <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-1" />
+            Página Inicial
+          </button>
+        </a>
+                </div>
+
+
+
+                    <motion.div variants={itemVariants} className="flex flex-col pt-5 md:flex-row items-center md:items-start space-y-8 md:space-x-12">
                         {/* Imagem de Perfil Placeholder */}
                         <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-indigo-500 flex items-center justify-center text-3xl font-bold text-white flex-shrink-0 shadow-xl border-4 border-indigo-200 dark:border-indigo-800">
                             {PORTFOLIO_DATA.name.charAt(0)}
@@ -168,7 +186,11 @@ const App = () => {
                         viewport={{ once: true, amount: 0.3 }}
                     >
                         {PORTFOLIO_DATA.skills.map((skill) => (
-                            <SkillBar key={skill.name}  />
+                            <SkillBar 
+                                key={skill.name} 
+                                name={skill.name}   // Passando o nome da skill (React, Tailwind, etc)
+                                level={skill.level} // Passando a porcentagem real
+                            />
                         ))}
                     </motion.div>
                 </section>

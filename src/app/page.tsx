@@ -32,9 +32,7 @@ export default function Home() {
         linkedin="https://linkedin.com/in/seuusuario"
         twitter="https://twitter.com/seuusuario"
       />  */ }
-                <div className="flex min-h-screen flex-col items-center justify-center bg-background text-foreground">
-                  
-                </div>
+      
 
           {/* 
             <div className="flex">
