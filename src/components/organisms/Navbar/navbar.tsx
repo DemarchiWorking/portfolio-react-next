@@ -52,10 +52,12 @@ export const Navbar = () => {
                 {openMenu ? <FaXmark/>: <FaBars/> }
             </button>
 
-
-            <button className={styles['btn-default']}>
-                Contatar
-            </button>
+                
+            <a href="https://www.linkedin.com/in/demarchi1">
+                <button className={styles['btn-default']}>
+                    Contatar
+                </button>
+            </a>
 
         </nav>
     </header>

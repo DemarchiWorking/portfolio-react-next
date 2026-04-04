@@ -126,12 +126,20 @@ export const Apresentacao = () => {
                     </motion.div>*/}
                     <motion.div>
                             <div className="flex space-x-4">
-                                <Botao variant="primary" onClick={() => console.log('Navegar para projetos')}
-                                    >Meus projetos  <ArrowRight className="ml-2 w-4" />
-                                </Botao>
-                                <Botao variant="secondary">
-                                    Resumo
-                                </Botao>
+                                <a href="https://github.com/DemarchiWorking">
+                                    <Botao variant="primary" onClick={() => console.log('Navegar para projetos')}
+                                        >Meus projetos  <ArrowRight className="ml-2 w-4" />
+                                    </Botao>
+                                </a>
+
+                                <a 
+                                    href="/CurriculoEngenheiroAntonioDemarchi.pdf" 
+                                    download="CurriculoEngenheiroAntonioDemarchi.pdf"
+                                >
+                                    <Botao variant="secondary">
+                                        Resumo
+                                    </Botao>
+                                </a>
                             </div>
                         </motion.div>
                     <motion.div>

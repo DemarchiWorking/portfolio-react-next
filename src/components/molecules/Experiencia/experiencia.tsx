@@ -70,7 +70,7 @@ const Experiencia: React.FC = () => {
         <div className="md:hidden">
           <div className="relative">
             {/* Linha central da timeline */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-red-500"></div>
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gray-100"></div>
             <div className="space-y-12">
               {experiences.map((exp, index) => (
                 <div
@@ -79,7 +79,7 @@ const Experiencia: React.FC = () => {
                     index % 2 === 0 ? 'md:flex-row-reverse' : ''
                   } relative`}
                 >
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-red-500 rounded-full z-10"></div>
+                  <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-gray-100 rounded-full z-10"></div>
                   <div
                     className={`w-full md:w-1/2 p-6 rounded-lg shadow-lg ${
                       exp.education ? 'bg-blue-800' : 'bg-gray-800'
@@ -90,7 +90,7 @@ const Experiencia: React.FC = () => {
                     <p className="text-gray-300">{exp.description}</p>
                   </div>
                   <div className="w-full md:w-1/2 text-center md:text-left py-4 md:py-0">
-                    <span className="text-3xl font-bold text-red-500">{exp.year}</span>
+                    <span className="text-3xl font-bold text-gray-100">{exp.year}</span>
                   </div>
                 </div>
               ))}
@@ -104,7 +104,7 @@ const Experiencia: React.FC = () => {
         <div className="hidden md:block">
           <div className="relative">
             {/* 1. A Linha Horizontal Central */}
-            <div className="absolute top-1/2 left-0 w-full h-1 bg-red-500 transform -translate-y-1/2"></div>
+            <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-100 transform -translate-y-1/2"></div>
 
             {/* 2. O Container dos Itens (usa flex para espaçar) */}
             {/* 'relative' e 'z-10' são para os pontos ficarem SOBRE a linha */}
@@ -115,7 +115,7 @@ const Experiencia: React.FC = () => {
                   <div className="flex flex-col items-center">
                     
                     {/* 3. Ponto na Linha (O Círculo) */}
-                    <div className="absolute top-1/2 transform -translate-y-1/2 w-5 h-5 bg-red-500 rounded-full border-4 border-gray-900"></div>
+                    <div className="absolute top-1/2 transform -translate-y-1/2 w-5 h-5 bg-gray-100 rounded-full border-4 border-gray-900"></div>
 
                     {/* 4. LÓGICA DE POSICIONAMENTO 
                       Se o índice for par (0, 2, 4...), o card vai para CIMA.
@@ -124,7 +124,7 @@ const Experiencia: React.FC = () => {
                     
                     {/* Card de Conteúdo (Posicionado ACIMA ou ABAIXO) */}
                     <div
-                      className={`w-64 p-4 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-red-500/50
+                      className={`w-64 p-4 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-gray-100/50
                         ${exp.education ? 'bg-blue-800' : 'bg-gray-800'}
                         ${index % 2 === 0 ? 'absolute bottom-12' : 'absolute top-12'}
                       `}
@@ -148,7 +148,7 @@ const Experiencia: React.FC = () => {
 
                     {/* Ano (Posicionado OPOSTO ao card) */}
                     <div
-                      className={`text-3xl font-bold text-red-500
+                      className={`text-3xl font-bold text-gray-100
                         ${index % 2 === 0 ? 'absolute top-12' : 'absolute bottom-12'}
                       `}
                     >
@@ -158,7 +158,11 @@ const Experiencia: React.FC = () => {
                   </div>
                 </li>
               ))}
-            </ol>
+            </ol> 
+              
+          </div>
+          <div className='pt-25 pb-25'>
+              <br></br><br></br><br></br><br></br><br></br>
           </div>
         </div>
       </div>
