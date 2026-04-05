@@ -99,9 +99,9 @@ export default function Sobre() {
             </p>
             <div className="flex flex-wrap gap-4">
               <a href="/CurriculoEngenheiroAntonioDemarchi.pdf" download>
-                <button className="flex items-center gap-2 bg-blue-500 text-white bg-foreground px-6 py-3 rounded-xl font-bold transition-all active:scale-95 border border-transparent cursor-pointer">
-                  <Download size={18} /> Baixar CV (PDF)
-                </button>
+                  <button className="flex items-center gap-2 hover:bg-blue-500 text-gray-900 dark:text-gray-200 bg-foreground text-background px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 border border-blue-500 hover:border-transparent rounded cursor-pointer">
+                                    <Download size={18} /> Baixar CV (PDF)
+                  </button>
               </a>
             </div>
           </div>
