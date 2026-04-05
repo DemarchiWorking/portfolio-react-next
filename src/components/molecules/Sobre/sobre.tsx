@@ -142,7 +142,7 @@ export const Sobre = () => {
                             <div className="w-full lg:w-1/2 flex flex-col items-start">
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     {projeto.tags.map(tag => (
-                                        <span key={tag} className="text-[10px] uppercase tracking-widest font-bold px-3 py-1 bg-blue-600/10 dark:bg-coral-destaque/10 text-blue-600 dark:text-white dark:text-coral-destaque border border-blue-600/20 dark:border-coral-destaque/20 rounded">
+                                        <span key={tag} className="text-[10px] uppercase tracking-widest font-bold px-3 py-1 bg-blue-600/10 dark:bg-coral-destaque/10 text-blue-600 dark:text-gray-200 dark:text-coral-destaque border border-blue-600/20 dark:border-coral-destaque/20 rounded">
                                             {tag}
                                         </span>
                                     ))}

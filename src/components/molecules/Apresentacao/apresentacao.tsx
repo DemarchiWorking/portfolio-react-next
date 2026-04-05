@@ -15,7 +15,7 @@ interface HeroData {
 // --- Dados Mock (Substitua pelos seus dados reais) ---
 const HERO_DATA: HeroData = {
     name: "Antonio Demarchi",
-    title: "Software Developer",
+    title: "Engenheiro de Sistemas",
     photoUrl: "perfil-antonio.png", // Placeholder
     resumeUrl: "/resume.pdf",
 };
@@ -92,14 +92,14 @@ export const Apresentacao = () => {
                 <div className="text-center md:text-left md:w-1/2 space-y-4 md:pr-8">
                     
                     <motion.p variants={itemVariants} className="text-xl text-gray-100">
-                        Hello <span className="text-blue-800">.</span> {/* text-[#ff5733] dark:*/}
+                        Olá <span className="text-blue-800">.</span> {/* text-[#ff5733] dark:*/}
                     </motion.p>
 
                     <motion.div variants={itemVariants} className="relative inline-block">
                         {/* Linha Laranja/Vermelha de Destaque */}
                         <span className="absolute left-0 bottom-[-5px] w-16 h-1 bg-blue-800"></span>
                         <h2 className="text-4xl md:text-5xl font-semibold leading-tight text-black dark:text-slate-200">
-                            I am {HERO_DATA.name}
+                            Sou {HERO_DATA.name}
                         </h2>
                     </motion.div>
                     
@@ -107,6 +107,9 @@ export const Apresentacao = () => {
                         {HERO_DATA.title}
                     </motion.h3>
 
+                    <motion.p variants={itemVariants} className="text-xl text-gray-100">
+                        Especialista em Desenvolvimento .NET (C#) <span className="text-blue-800">.</span> {/* text-[#ff5733] dark:*/}
+                    </motion.p>
                     {/* Botões de Ação 
                     
                     <motion.div variants={itemVariants} className="mt-8 flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-8">

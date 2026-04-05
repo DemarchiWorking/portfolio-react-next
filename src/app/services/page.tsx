@@ -138,7 +138,7 @@ export default function Servicos() {
                   <MessageCircle size={22} className="transition-transform group-hover:rotate-12 group-hover:scale-110" />
                   
                   {/* Texto com Troca Dinâmica */}
-                  <div className="relative font-black uppercase tracking-widest text-sm">
+                  <div className="relative font-black uppercase tracking-widest text-sm cursor-pointer">
                     <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-2">
                       Tenho Interesse
                     </span>
@@ -172,7 +172,7 @@ export default function Servicos() {
           <div className="flex items-center gap-4 pt-6">
             <button 
               onClick={prevSlide}
-              className="p-4 rounded-full border border-border bg-card hover:bg-primary hover:text-primary-foreground transition-all active:scale-90"
+              className="p-4 rounded-full border border-border bg-card hover:bg-primary hover:text-primary-foreground transition-all active:scale-90 cursor-pointer"
             >
               <ChevronLeft size={24} />
             </button>
@@ -186,7 +186,7 @@ export default function Servicos() {
 
             <button 
               onClick={nextSlide}
-              className="p-4 rounded-full border border-border bg-card hover:bg-primary hover:text-primary-foreground transition-all active:scale-90"
+              className="p-4 rounded-full border border-border bg-card hover:bg-primary hover:text-primary-foreground transition-all active:scale-90 cursor-pointer"
             >
               <ChevronRight size={24} />
             </button>

@@ -159,19 +159,20 @@ export default function Home() {
           </button>
 
           <a href="https://github.com/DemarchiWorking?tab=repositories">
-            <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
+            <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded cursor-pointer">
               <tr>
                 <td>            
                   <LockOpen className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" />
                 </td>
                 <td>                    
-                  Portfólio Projetos Publicos 
+                  Portfólio Projetos Publicos (90 Projetos)  
                 </td>
               </tr>
             </button>
           </a>
+          <p>
 
-
+          </p>
           </a>
         </div>
 

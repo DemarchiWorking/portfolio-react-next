@@ -124,20 +124,20 @@ const App = () => {
                     initial="hidden"
                     animate="visible"
                 >
-                <div className='bg-blue-900  pt-10 pb-10 pl-10 pr-10 rounded-xl shadow-lg'>
-        <a href="/">
-          <button 
-            className="group flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors pointer"
-          >
-            <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-1" />
-            Página Inicial
-          </button>
-        </a>
+                <div className='bg-blue-900  pt-10 pb-10 pl-10 pr-10 shadow-lg cursor-pointer'>
+                    <a href="/">
+                    <button 
+                        className="group flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                    >
+                        <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-1" />
+                        Página Inicial
+                    </button>
+                    </a>
                 </div>
 
 
 
-                    <motion.div variants={itemVariants} className="flex flex-col pt-5 md:flex-row items-center md:items-start space-y-8 md:space-x-12">
+                    <motion.div variants={itemVariants} className="flex flex-col pt-8 md:flex-row items-center md:items-start space-y-8 md:space-x-12">
                         {/* Imagem de Perfil Placeholder */}
                         <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-indigo-500 flex items-center justify-center text-3xl font-bold text-white flex-shrink-0 shadow-xl border-4 border-indigo-200 dark:border-indigo-800">
                             {PORTFOLIO_DATA.name.charAt(0)}
