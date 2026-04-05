@@ -16,7 +16,7 @@ interface HeroData {
 const HERO_DATA: HeroData = {
     name: "Antonio Demarchi",
     title: "Engenheiro de Sistemas",
-    photoUrl: "perfil-antonio.png", // Placeholder
+    photoUrl: "animacao-desenvolvedor.png", // Placeholder //perfil-antonio.png
     resumeUrl: "/resume.pdf",
 };
 
@@ -157,7 +157,7 @@ export const Apresentacao = () => {
                     variants={itemVariants}
                     className="w-full md:w-1/2 mt-12 md:mt-0 flex justify-center md:justify-end"
                 >   {/* Borda abaixo */}
-                    <div className="w-64 h-64 md:w-80 md:h-80 relative rounded-full overflow-hidden border-4 border-blue-800 dark:border-slate-900 shadow-xl bg-slate-200 dark:bg-[#000000]">
+                    <div className="w-64 h-64 md:w-80 md:h-80 relative rounded-full overflow-hidden border-4 border-blue-800 dark:border-slate-900 shadow-xl bg-slate-400 dark:bg-gray-900">
                         {/* Imagem de Perfil */}
                         <img
                             src={HERO_DATA.photoUrl}
@@ -165,9 +165,9 @@ export const Apresentacao = () => {
                             className="absolute inset-0 w-full h-full object-cover"
                         />
                         {/* Camada de Efeito Abstrato (para replicar a cor na borda) */}
-                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-slate-900/10 to-transparent flex items-center justify-center">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent to-transparent flex items-center justify-center">
                             {/* Círculo interno para replicar o efeito de aura */}
-                            <div className="w-full h-full rounded-full border-4 border-[#ff5733]/20 absolute"></div>
+                            <div className="w-full h-full rounded-full border-4 border-blue-600/20 absolute"></div>
                         </div>
                     </div>
                 </motion.div>
