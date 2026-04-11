@@ -69,7 +69,7 @@ export const Sobre = () => {
             image: "/Mobile.png",
             linkRepo: "https://github.com/DemarchiWorking/associacao-moradores-java",
             linkLive: "https://associacao-moradores-java.vercel.app/bazar",
-            pdf: "antonio_demarchi_PB_Engenharia_Disciplinada.pdf"
+            pdf: "/Vitrine-Artesanato-Digital.pdf"
         },{
             title: "Plataforma Ensino Programação Gamifigada com Portfólio",
             description: "Plataforma Educacional com uma pegada gamificada para complementar uma plataforma existente com nome alunos.",
@@ -77,7 +77,7 @@ export const Sobre = () => {
             image: "/",
             linkRepo: "/Pagina-Inicial.png",
             linkLive: "https://devlivery-portfolio-pb-frontend-nnq.vercel.app/inicio",
-            pdf: "/Gamificacao-Aulas-Programacao.pdf"
+            pdf: "/antonio_demarchi_PB_Engenharia_Disciplinada.pdf"
         },
         {
             title: "App Infraestrutura - Kubernetes - Cloud - IaC",
