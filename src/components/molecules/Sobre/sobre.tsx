@@ -155,10 +155,11 @@ export const Sobre = () => {
                                         </span>
                                     ))}
                                 </div>
-                                
-                                <h3 className="text-3xl text-black dark:text-white font-bold mb-4 group-hover:text-blue-600 dark:group-hover:text-coral-destaque transition-colors">
-                                    {projeto.title}
-                                </h3>
+                                <a href={projeto.linkLive}>
+                                    <h3 className="text-3xl text-black dark:text-white font-bold mb-4 group-hover:text-blue-600 dark:group-hover:text-coral-destaque transition-colors">
+                                        {projeto.title}
+                                    </h3>
+                                </a>
                                 
                                 <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-8">
                                     {projeto.description}
