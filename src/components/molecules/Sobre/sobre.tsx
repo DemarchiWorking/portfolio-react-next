@@ -111,8 +111,15 @@ export const Sobre = () => {
                     <div>
                         <h2 className="text-4xl md:text-5xl text-black dark:text-white font-bold mb-6">Sobre</h2>
                         <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg leading-relaxed">
-                            Engenheiro de Software com 7 anos de experiência prática e 12 anos de imersão na área, minha trajetória incluiu contribuições diretas para o sucesso de empresas líderes em seus respectivos setores.
+                            Engenheiro de Software com 8 anos de experiência prática e 12 anos de imersão na área, minha trajetória incluiu contribuições diretas para o sucesso de empresas líderes em seus respectivos setores.
                         </p>
+
+                        <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg leading-relaxed">
+                            [Pagamento por Êxito] Acredito tanto na eficiência das minhas entregas que <strong>atuo com modelos de parceria baseados em ROI</strong>. Busco projetos onde possamos alinhar tecnologia e rentabilidade, onde minha remuneração esteja atrelada ao sucesso real e ao retorno financeiro gerado para o seu negócio.
+                        </p>
+                        
+
+
                         <div className="flex justify-between items-center gap-4 py-4 border-t border-b border-gray-200 dark:border-gray-700/50">
                             {statsData.map((item) => (
                                 <StatsItem key={item.label} value={item.value} label={item.label} />
