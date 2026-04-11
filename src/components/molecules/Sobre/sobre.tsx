@@ -74,7 +74,7 @@ export const Sobre = () => {
             title: "Plataforma Ensino Programação Gamifigada com Portfólio",
             description: "Plataforma Educacional com uma pegada gamificada para complementar uma plataforma existente com nome alunos.",
             tags: ["Angular", "Backend Incomplete"],
-            image: "/",
+            image: "/Pagina-Inicial.png",
             linkRepo: "/Pagina-Inicial.png",
             linkLive: "https://devlivery-portfolio-pb-frontend-nnq.vercel.app/inicio",
             pdf: "/antonio_demarchi_PB_Engenharia_Disciplinada.pdf"
