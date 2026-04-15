@@ -1,6 +1,7 @@
 "use client";
 
-import { Mail, Linkedin, Github, MessageCircle, Copy, ExternalLink, ArrowLeft } from "lucide-react";
+import { motion, Variants } from "framer-motion";
+import { Mail, Linkedin, Github, MessageCircle, ExternalLink, ArrowLeft } from "lucide-react";
 import { ThemeToggle } from "@/components/molecules/theme-toggle";
 
 export default function Contato() {
@@ -39,33 +40,63 @@ export default function Contato() {
     }
   ];
 
+  // Variantes para animação em cascata
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.4, ease: "easeOut" } 
+    }
+  };
+
   return (
     <main className="min-h-screen bg-background text-foreground selection:bg-primary/20 flex flex-col items-center py-16 px-4">
       
       {/* Header com Navegação */}
-      <div className="w-full max-w-4xl flex justify-between items-center mb-12">
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-4xl flex justify-between items-center mb-12"
+      >
         <button 
           onClick={() => window.history.back()}
-          className="group flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          className="group flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         >
           <ArrowLeft size={18} className="transition-transform group-hover:-translate-x-1" />
           Voltar
         </button>
         <ThemeToggle />
-      </div>
+      </motion.div>
 
-      <div className="w-full max-w-4xl">
-        <header className="mb-12">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="w-full max-w-4xl"
+      >
+        <motion.header variants={itemVariants} className="mb-12">
           <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">
             Vamos conversar?
           </h1>
           <p className="text-lg text-muted-foreground">
             Seja para um novo projeto ou apenas para trocar uma ideia sobre tecnologia.
           </p>
-        </header>
+        </motion.header>
 
         {/* Estrutura de Tabela Moderna */}
-        <div className="overflow-hidden rounded-2xl border border-border bg-card/50 backdrop-blur-sm">
+        <motion.div 
+          variants={itemVariants}
+          className="overflow-hidden rounded-2xl border border-border bg-card/50 backdrop-blur-sm shadow-xl"
+        >
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -77,7 +108,11 @@ export default function Contato() {
               </thead>
               <tbody className="divide-y divide-border">
                 {contactData.map((item, index) => (
-                  <tr key={index} className="group hover:bg-muted/30 transition-colors">
+                  <motion.tr 
+                    key={index} 
+                    variants={itemVariants}
+                    className="group hover:bg-muted/30 transition-colors"
+                  >
                     {/* Coluna Descrição */}
                     <td className="px-6 py-5">
                       <div className={`flex items-center gap-3 font-medium transition-colors ${item.color}`}>
@@ -99,22 +134,25 @@ export default function Contato() {
                         href={item.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary hover:bg-blue-500 text-secondary-foreground text-xs font-bold uppercase tracking-tighter hover:bg-primary hover:text-primary-foreground transition-all active:scale-95 border border-blue-500 hover:border-transparent rounded"
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-xs font-bold uppercase tracking-tighter hover:bg-primary hover:text-primary-foreground transition-all active:scale-95 border border-blue-500 hover:border-transparent"
                       >
                         {item.actionText}
                         <ExternalLink size={14} />
                       </a>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
               </tbody>
             </table>
           </div>
-        </div>
+        </motion.div>
 
 
         {/* Footer de Informações Adicionais */}
-        <footer className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 px-2">
+        <motion.footer 
+          variants={itemVariants}
+          className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4 px-2"
+        >
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <span className="font-bold text-foreground">CNPJ:</span>
             44.897.847/0001-96
@@ -122,8 +160,8 @@ export default function Contato() {
           <div className="text-xs text-muted-foreground italic">
             Disponível para propostas de parcerias.
           </div>
-        </footer>
-      </div>
+        </motion.footer>
+      </motion.div>
     </main>
   );
 }

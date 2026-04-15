@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { 
   ChevronLeft, 
   ChevronRight, 
@@ -72,101 +73,126 @@ export default function Servicos() {
   const nextSlide = () => setCurrentIndex((prev) => (prev === SERVICES.length - 1 ? 0 : prev + 1));
   const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? SERVICES.length - 1 : prev - 1));
 
-  // Função para abrir múltiplos links
   const handleContactClick = () => {
     window.open("https://www.linkedin.com/in/demarchi1", "_blank");
     window.open("https://wa.me/24992984198", "_blank");
+  };
+
+  const fadeVariants: Variants = {
+    initial: { opacity: 0, x: 20 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -20 },
   };
 
   return (
     <section className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-6 lg:p-20">
       <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         
-        {/* IMAGEM PRINCIPAL */}
+        {/* IMAGEM PRINCIPAL COM MOTION */}
         <div className="relative group overflow-hidden rounded-3xl aspect-square border border-border shadow-2xl">
-          <img 
-            src={currentService.image} 
-            alt={currentService.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
+          <AnimatePresence mode="wait">
+            <motion.img 
+              key={currentService.id}
+              src={currentService.image} 
+              alt={currentService.title}
+              initial={{ scale: 1.1, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="w-full h-full object-cover"
+            />
+          </AnimatePresence>
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent flex items-end p-8">
-            <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20">
+            <motion.div 
+              key={currentService.id}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20"
+            >
               {currentService.icon}
-            </div>
+            </motion.div>
           </div>
         </div>
 
-        {/* CONTEÚDO */}
+        {/* CONTEÚDO COM MOTION */}
         <div className="flex flex-col space-y-6">
-          <div key={currentService.id} className="animate-in fade-in slide-in-from-right-8 duration-500">
-            <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6 ${currentService.available ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
-              {currentService.available ? (
-                <><Unlock size={14} /> Disponível</>
-              ) : (
-                <><Lock size={14} /> Indisponível</>
-              )}
-            </div>
-            
-            <h2 className="text-5xl lg:text-7xl font-black tracking-tighter mb-4">
-              {currentService.title}
-            </h2>
-            
-            <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-              {currentService.description}
-            </p>
-
-            {/* NOTA EXPLICATIVA CONDICIONAL */}
-            {!currentService.available && (
-              <div className="bg-secondary/30 border-l-4 border-primary p-4 rounded-r-xl mb-6 animate-in slide-in-from-left-2 duration-300">
-                <div className="flex items-center gap-2 text-primary font-bold text-sm mb-1 uppercase">
-                  <AlertCircle size={16} /> Nota Importante
-                </div>
-                <p className="text-sm italic text-muted-foreground">
-                  Atualmente, estou me dedicando de forma integral ao projeto nstech. Por esse motivo, minha agenda está fechada para novos contratos, aceitando apenas parcerias estratégicas e trabalhos voluntários.
-                </p>
+          <AnimatePresence mode="wait">
+            <motion.div 
+              key={currentService.id} 
+              variants={fadeVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-6 ${currentService.available ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                {currentService.available ? (
+                  <><Unlock size={14} /> Disponível</>
+                ) : (
+                  <><Lock size={14} /> Indisponível</>
+                )}
               </div>
-            )}
+              
+              <h2 className="text-5xl lg:text-7xl font-black tracking-tighter mb-4">
+                {currentService.title}
+              </h2>
+              
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                {currentService.description}
+              </p>
 
-            {/* BOTÃO DINÂMICO (Disponível apenas se service.available for true) */}
-            {currentService.available && (
-              <div className="mb-6">
-                <button
-                  onClick={handleContactClick}
-                  className="group relative flex w-full items-center justify-center gap-3 rounded-2xl bg-foreground py-4 text-background transition-all hover:bg-blue-600 hover:text-white active:scale-[0.98] shadow-xl overflow-hidden"
+              {!currentService.available && (
+                <motion.div 
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="bg-secondary/30 border-l-4 border-primary p-4 rounded-r-xl mb-6"
                 >
-                  {/* Ícone Animado */}
-                  <MessageCircle size={22} className="transition-transform group-hover:rotate-12 group-hover:scale-110" />
-                  
-                  {/* Texto com Troca Dinâmica */}
-                  <div className="relative font-black uppercase tracking-widest text-sm cursor-pointer">
-                    <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-2">
-                      Tenho Interesse
-                    </span>
-                    <span className="absolute inset-0 transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 whitespace-nowrap">
-                      Agendar Conversa
-                    </span>
+                  <div className="flex items-center gap-2 text-primary font-bold text-sm mb-1 uppercase">
+                    <AlertCircle size={16} /> Nota Importante
                   </div>
-                </button>
-              </div>
-            )}
+                  <p className="text-sm italic text-muted-foreground">
+                    Atualmente, estou me dedicando de forma integral ao projeto nstech. Por esse motivo, minha agenda está fechada para novos contratos, aceitando apenas parcerias estratégicas e trabalhos voluntários.
+                  </p>
+                </motion.div>
+              )}
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-2xl bg-secondary/50 border border-border">
-                <span className="block text-[10px] text-muted-foreground uppercase font-black mb-1 tracking-widest">Investimento</span>
-                <span className="text-xl font-mono font-bold text-primary">{currentService.price}</span>
+              {currentService.available && (
+                <div className="mb-6">
+                  <button
+                    onClick={handleContactClick}
+                    className="group relative flex w-full items-center justify-center gap-3 rounded-2xl bg-foreground py-4 text-background transition-all hover:bg-blue-600 hover:text-white active:scale-[0.98] shadow-xl overflow-hidden cursor-pointer"
+                  >
+                    <MessageCircle size={22} className="transition-transform group-hover:rotate-12 group-hover:scale-110" />
+                    <div className="relative font-black uppercase tracking-widest text-sm">
+                      <span className="inline-block transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-2">
+                        Tenho Interesse
+                      </span>
+                      <span className="absolute inset-0 transition-all duration-300 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 whitespace-nowrap">
+                        Agendar Conversa
+                      </span>
+                    </div>
+                  </button>
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-secondary/50 border border-border">
+                  <span className="block text-[10px] text-muted-foreground uppercase font-black mb-1 tracking-widest">Investimento</span>
+                  <span className="text-xl font-mono font-bold text-primary">{currentService.price}</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-secondary/50 border border-border">
+                  <span className="block text-[10px] text-muted-foreground uppercase font-black mb-1 tracking-widest">Disponibilidade</span>
+                  <span className="flex items-center gap-2 text-sm font-bold">
+                    {currentService.available ? (
+                      <><CheckCircle2 size={16} className="text-green-500" /> Aberta</>
+                    ) : (
+                      <><XCircle size={16} className="text-red-500" /> Fechada</>
+                    )}
+                  </span>
+                </div>
               </div>
-              <div className="p-4 rounded-2xl bg-secondary/50 border border-border">
-                <span className="block text-[10px] text-muted-foreground uppercase font-black mb-1 tracking-widest">Disponibilidade</span>
-                <span className="flex items-center gap-2 text-sm font-bold">
-                  {currentService.available ? (
-                    <><CheckCircle2 size={16} className="text-green-500" /> Aberta</>
-                  ) : (
-                    <><XCircle size={16} className="text-red-500" /> Fechada</>
-                  )}
-                </span>
-              </div>
-            </div>
-          </div>
+            </motion.div>
+          </AnimatePresence>
 
           {/* CONTROLES */}
           <div className="flex items-center gap-4 pt-6">
@@ -178,9 +204,11 @@ export default function Servicos() {
             </button>
             
             <div className="flex-1 h-[2px] bg-border relative">
-              <div 
-                className="absolute h-full bg-primary transition-all duration-500"
-                style={{ width: `${((currentIndex + 1) / SERVICES.length) * 100}%` }}
+              <motion.div 
+                className="absolute h-full bg-primary"
+                initial={{ width: 0 }}
+                animate={{ width: `${((currentIndex + 1) / SERVICES.length) * 100}%` }}
+                transition={{ duration: 0.5 }}
               />
             </div>
 
@@ -192,7 +220,13 @@ export default function Servicos() {
             </button>
           </div>
         </div>
-        <div className="mt-12 p-6 rounded-2xl bg-secondary/30 border border-border">
+
+        {/* FOOTER CONTATO */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-12 p-6 rounded-2xl bg-secondary/30 border border-border"
+        >
           <p className="text-xs font-black uppercase tracking-[0.2em] text-primary mb-4">
             Para propostas ou dúvidas técnicas, sinta-se à vontade para entrar em contato:
           </p>
@@ -206,7 +240,7 @@ export default function Servicos() {
               antonio.demarchi@al.infnet.edu.br
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

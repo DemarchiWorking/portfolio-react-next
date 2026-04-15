@@ -74,19 +74,42 @@ export default function Sobre() {
     { name: "FIAP", detail: "Pós-Tech Cloud" }
   ];
 
+  // Variantes para animação de lista
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1 }
+  };
+
   return (
     <main className="min-h-screen bg-background text-foreground selection:bg-primary/20 pb-20">
-      <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md px-6 py-4">
+      <motion.nav 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-md px-6 py-4"
+      >
         <div className="mx-auto flex max-w-5xl justify-between items-center">
           <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400"> Perfil<span className="text-gray-900 dark:text-white">.dev</span></h1>
           <ThemeToggle />
         </div>
-      </nav>
+      </motion.nav>
 
       <div className="mx-auto max-w-5xl px-6 pt-16">
         {/* Hero Section */}
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-20">
-          <div className="lg:col-span-2">
+          <motion.div 
+            initial={{ x: -30, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-2"
+          >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-6">
               <BadgeCheck size={14} />
               DISPONÍVEL PARA PARCERIAS E MENTORIA
@@ -99,14 +122,23 @@ export default function Sobre() {
             </p>
             <div className="flex flex-wrap gap-4">
               <a href="/CurriculoEngenheiroAntonioDemarchi.pdf" download>
-                  <button className="flex items-center gap-2 hover:bg-blue-500 text-gray-900 dark:text-gray-200 bg-foreground text-background px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all active:scale-95 border border-blue-500 hover:border-transparent rounded cursor-pointer">
-                                    <Download size={18} /> Baixar CV (PDF)
-                  </button>
+                  <motion.button 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 hover:bg-blue-500 text-gray-900 dark:text-gray-200 bg-foreground text-background px-6 py-3 rounded-xl font-bold transition-all border border-blue-500 hover:border-transparent cursor-pointer"
+                  >
+                    <Download size={18} /> Baixar CV (PDF)
+                  </motion.button>
               </a>
             </div>
-          </div>
+          </motion.div>
           
-          <div className="relative group">
+          <motion.div 
+            initial={{ x: 30, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="relative group"
+          >
             <div className="absolute -inset-1 bg-gradient-to-r from-primary to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
             <div className="relative h-full min-h-[250px] rounded-2xl border border-border bg-card p-8 flex flex-col justify-center">
               <div className="space-y-4">
@@ -124,16 +156,17 @@ export default function Sobre() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </section>
 
-        {/* SEÇÃO CORRIGIDA: BOTÕES ANIMADOS SEM EXCESSO DE ESPAÇO */}
+        {/* SEÇÃO BOTÕES ANIMADOS */}
         <section className="relative mb-20">
           <div className="flex items-center justify-center gap-3 w-full">
-            <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-border" />
+            <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-border origin-right" />
             
             <div className="flex flex-wrap justify-center gap-2">
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
                 onMouseEnter={() => setActivePanel('brands')}
                 onClick={() => setActivePanel(activePanel === 'brands' ? 'none' : 'brands')}
                 className={`z-10 px-4 py-2 rounded-full border transition-all duration-300 flex items-center gap-2 cursor-pointer text-[10px] font-bold uppercase tracking-tight
@@ -141,9 +174,10 @@ export default function Sobre() {
               >
                 <Building2 size={12} /> Empresas
                 <motion.span animate={{ rotate: activePanel === 'brands' ? 45 : 0 }}><Plus size={12} /></motion.span>
-              </button>
+              </motion.button>
 
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
                 onMouseEnter={() => setActivePanel('institutions')}
                 onClick={() => setActivePanel(activePanel === 'institutions' ? 'none' : 'institutions')}
                 className={`z-10 px-4 py-2 rounded-full border transition-all duration-300 flex items-center gap-2 cursor-pointer text-[10px] font-bold uppercase tracking-tight
@@ -151,10 +185,10 @@ export default function Sobre() {
               >
                 <GraduationCap size={12} /> Carreira
                 <motion.span animate={{ rotate: activePanel === 'institutions' ? 45 : 0 }}><Plus size={12} /></motion.span>
-              </button>
+              </motion.button>
             </div>
 
-            <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-border" />
+            <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-border origin-left" />
           </div>
 
           <div className="relative w-full" onMouseLeave={() => setActivePanel('none')}>
@@ -171,19 +205,18 @@ export default function Sobre() {
                   <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12 py-10 px-4">
                     {activePanel === 'brands' ? (
                       brands.map((brand, i) => (
-                        <motion.div // 1. Alterado de span para div
+                        <motion.div 
                           key={brand.name}
-                          initial={{ opacity: 0, y: 5 }}
+                          initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 0.6, y: 0 }}
-                          whileHover={{ opacity: 1, scale: 1.05 }}
-                          // 2. Adicionado flex flex-col e items-center para centralizar tudo
+                          whileHover={{ opacity: 1, scale: 1.1, y: -5 }}
                           className={`flex flex-col items-center gap-2 cursor-pointer transition-all ${brand.style}`}
                         >
                           <div className="h-10 w-10 flex items-center justify-center">
                             <img 
                               src={brand.foto} 
                               alt={brand.name}
-                              className="h-full w-full object-contain" // 3. object-contain mantém a proporção da logo
+                              className="h-full w-full object-contain"
                             />
                           </div>
                           <span className="text-sm md:text-base font-medium">{brand.name}</span>
@@ -193,9 +226,9 @@ export default function Sobre() {
                       institutions.map((inst, i) => (
                         <motion.div
                           key={inst.name}
-                          initial={{ opacity: 0, y: 5 }}
+                          initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 0.7, y: 0 }}
-                          whileHover={{ opacity: 1, y: -2 }}
+                          whileHover={{ opacity: 1, y: -5, scale: 1.05 }}
                           className="flex flex-col items-center group cursor-default"
                         >
                           <span className="text-sm md:text-base font-bold group-hover:text-indigo-500 transition-colors">{inst.name}</span>
@@ -211,7 +244,13 @@ export default function Sobre() {
         </section>
 
         {/* Experiência Profissional */}
-        <section className="mb-24">
+        <motion.section 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={containerVariants}
+          className="mb-24"
+        >
           <div className="flex items-center gap-4 mb-10">
             <Briefcase className="text-primary" size={24} />
             <h2 className="text-2xl font-bold tracking-tight">Trajetória Profissional</h2>
@@ -220,7 +259,11 @@ export default function Sobre() {
 
           <div className="space-y-8">
             {experiences.map((exp, index) => (
-              <div key={index} className="group relative pl-8 before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-border hover:before:bg-primary transition-colors">
+              <motion.div 
+                key={index} 
+                variants={itemVariants}
+                className="group relative pl-8 before:absolute before:left-0 before:top-0 before:h-full before:w-[2px] before:bg-border hover:before:bg-primary transition-colors"
+              >
                 <div className="absolute left-[-5px] top-0 h-[12px] w-[12px] rounded-full bg-border group-hover:bg-primary transition-colors"></div>
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-2">
                   <div>
@@ -232,35 +275,51 @@ export default function Sobre() {
                 <p className="text-sm text-muted-foreground mb-4 max-w-3xl leading-relaxed">{exp.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {exp.tags.map(tag => (
-                    <span key={tag} className="text-[9px] uppercase tracking-widest font-bold px-2 py-1 rounded-md bg-secondary border border-border">
+                    <motion.span 
+                      whileHover={{ y: -2, backgroundColor: "var(--primary)", color: "white" }}
+                      key={tag} 
+                      className="text-[9px] uppercase tracking-widest font-bold px-2 py-1 rounded-md bg-secondary border border-border"
+                    >
                       {tag}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* Grid Final */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-10">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
             <div className="flex items-center gap-4 mb-6">
               <GraduationCap className="text-primary" size={24} />
               <h2 className="text-xl font-bold tracking-tight">Formação</h2>
             </div>
             <div className="space-y-4">
               {education.map((edu, index) => (
-                <div key={index} className="p-5 rounded-xl border border-border bg-card/50">
+                <motion.div 
+                  key={index} 
+                  whileHover={{ x: 5 }}
+                  className="p-5 rounded-xl border border-border bg-card/50 hover:bg-card transition-colors"
+                >
                   <h3 className="font-bold text-base mb-1">{edu.degree}</h3>
                   <p className="text-xs text-primary mb-2">{edu.institution} • {edu.status}</p>
                   <p className="text-xs text-muted-foreground">{edu.focus}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
             <div className="flex items-center gap-4 mb-6">
               <Terminal className="text-primary" size={24} />
               <h2 className="text-xl font-bold tracking-tight">Tech Stack</h2>
@@ -272,14 +331,18 @@ export default function Sobre() {
                 { title: "Segurança", desc: "Sonar, DevSecOps", icon: BadgeCheck },
                 { title: "Data", desc: "SQL, Grafana, ML", icon: ChevronRight }
               ].map((skill, i) => (
-                <div key={i} className="p-3 rounded-lg border border-border bg-muted/30">
+                <motion.div 
+                  key={i} 
+                  whileHover={{ y: -5, borderColor: "var(--primary)" }}
+                  className="p-3 rounded-lg border border-border bg-muted/30 transition-colors"
+                >
                   <skill.icon size={16} className="mb-2 text-primary" />
                   <h4 className="font-bold text-xs mb-1">{skill.title}</h4>
                   <p className="text-[10px] text-muted-foreground">{skill.desc}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </section>
       </div>
     </main>
