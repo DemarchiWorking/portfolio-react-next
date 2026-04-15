@@ -124,7 +124,7 @@ const App = () => {
                     initial="hidden"
                     animate="visible"
                 >
-                <div className='bg-blue-900  pt-10 pb-10 pl-10 pr-10 shadow-lg cursor-pointer'>
+                <div className='bg-blue-900 hover:bg-gray-300 hover:text-blue-500  pt-10 pb-10 pl-10 pr-10 shadow-lg cursor-pointer'>
                     <a href="/">
                     <button 
                         className="group flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"

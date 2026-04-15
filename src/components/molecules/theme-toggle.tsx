@@ -11,8 +11,7 @@ export function ThemeToggle() {
   const isDark = theme === "dark";
 
   return (
-    <div className="bg-blue-700 dark:bg-gray-900">
-    <Switch
+<div className="bg-gradient-to-r from-[#1C398E] via-[#264cb5] to-[#1C398E] dark:bg-none dark:bg-gray-900">    <Switch
       id="theme-toggle"
       checked={isDark}
       onCheckedChange={toggle}
