@@ -69,7 +69,8 @@ export const Sobre = () => {
             image: "/Mobile.png",
             linkRepo: "https://github.com/DemarchiWorking/associacao-moradores-java",
             linkLive: "https://associacao-moradores-java.vercel.app/bazar",
-            pdf: "/Vitrine-Artesanato-Digital.pdf"
+            pdf: "/Vitrine-Artesanato-Digital.pdf",
+            video: "https://www.youtube.com/watch?v=CRD-w_oFgvQ"
         },{
             title: "Plataforma Ensino Programação Gamifigada com Portfólio",
             description: "Plataforma Educacional com uma pegada gamificada para complementar uma plataforma existente com nome alunos.",
@@ -77,7 +78,8 @@ export const Sobre = () => {
             image: "/Pagina-Inicial.png",
             linkRepo: "/Pagina-Inicial.png",
             linkLive: "https://devlivery-portfolio-pb-frontend-nnq.vercel.app/inicio",
-            pdf: "/antonio_demarchi_PB_Engenharia_Disciplinada.pdf"
+            pdf: "/antonio_demarchi_PB_Engenharia_Disciplinada.pdf",
+            video: ""
         },
         {
             title: "App Infraestrutura - Kubernetes - Cloud - IaC",
@@ -86,7 +88,8 @@ export const Sobre = () => {
             image: "/desenho.png",
             linkRepo: "https://github.com/DemarchiWorking/toggle-master-microservice-kubernetes",
             linkLive: "#",
-            pdf: "/DevOps.pdf"
+            pdf: "/DevOps.pdf",
+            video: ""
         }
     ];
 
@@ -115,7 +118,7 @@ export const Sobre = () => {
                         </p>
 
                         <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg leading-relaxed">
-                            [Pagamento por Êxito] Acredito tanto na eficiência das minhas entregas que <strong>atuo com modelos de parceria baseados em ROI</strong>. Busco projetos onde possamos alinhar tecnologia e rentabilidade, onde minha remuneração esteja atrelada ao sucesso real e ao retorno financeiro gerado para o seu negócio.
+                            [Pagamento por Êxito] Acredito na eficiência das minhas entregas,<strong>atuo com modelos de parceria baseados em ROI (Retorno sobre o Investimento) </strong>. Busco projetos onde possamos alinhar tecnologia e rentabilidade, onde minha remuneração esteja atrelada ao sucesso real e ao retorno financeiro gerado para o seu negócio.
                         </p>
                         
 
@@ -143,16 +146,32 @@ export const Sobre = () => {
                             key={index} 
                             className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-10 lg:gap-16`}
                         >
-                            <div className="w-full lg:w-1/2 group">
-                                <div className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-[#1e293b] shadow-2xl">
-                                    <img 
-                                        src={projeto.image} 
-                                        alt={projeto.title} 
-                                        className="w-full h-[300px] md:h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
-                                    />
-                                    <div className="absolute inset-0 bg-black/5 dark:bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-                                </div>
-                            </div>
+                            
+                                        <div className="w-full lg:w-1/2 group">
+                                            <div className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-[#1e293b] shadow-2xl">
+                                                {projeto.video ? (
+                                                    <a 
+                                                        href={projeto.video} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer" 
+                                                        className="cursor-pointer"
+                                                    >
+                                                        <img 
+                                                            src={projeto.image} 
+                                                            alt={projeto.title} 
+                                                            className="w-full h-[300px] md:h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
+                                                        />
+                                                    </a>
+                                                ) : (
+                                                    <img 
+                                                        src={projeto.image} 
+                                                        alt={projeto.title} 
+                                                        className="w-full h-[300px] md:h-[400px] object-cover transition-transform duration-500 group-hover:scale-105 cursor-default"
+                                                    />
+                                                )}
+                                                <div className="absolute inset-0 bg-black/5 dark:bg-black/20 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
+                                            </div>
+                                        </div>
 
                             <div className="w-full lg:w-1/2 flex flex-col items-start">
                                 <div className="flex flex-wrap gap-2 mb-4">
