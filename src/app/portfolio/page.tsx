@@ -150,7 +150,7 @@ export default function Home() {
               key={project.id}
               variants={itemVariants}
               onClick={() => setSelectedProject(project)}
-              className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 group ${
+              className={`w-full text-left p-5 hover:bg-blue-900 cursor-pointer rounded-2xl border transition-all duration-300 group ${
                 selectedProject.id === project.id 
                 ? "bg-card border-primary shadow-lg scale-[1.02]" 
                 : "bg-transparent border-border hover:border-primary/50"
