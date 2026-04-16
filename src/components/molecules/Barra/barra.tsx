@@ -8,7 +8,7 @@ const SKILLS = [
   'Python',
   'Angular',
   'Git',
-  'Github',
+  'DevOps',
 ];
 
 export const Barra = () => {
