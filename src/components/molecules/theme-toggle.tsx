@@ -11,31 +11,33 @@ export function ThemeToggle() {
   const isDark = theme === "dark";
 
   return (
-<div className="bg-gradient-to-r from-[#1C398E] via-[#264cb5] to-[#1C398E] dark:bg-none dark:bg-gray-900">    <Switch
-      id="theme-toggle"
-      checked={isDark}
-      onCheckedChange={toggle}
-      aria-label={`Alternar para modo ${isDark ? "claro" : "escuro"}`}
-      title={`Modo ${isDark ? "claro" : "escuro"}`}
-      className={cn(
-        "hover:scale-105 focus-visible:ring-offset-background motion-safe:transition-transform motion-safe:duration-200 border-2 border-blue-500" // Debug: Blue border to confirm rendering
-      )}
-    >
-      <Sun
+  <div className="bg-gradient-to-r from-[#1C398E] via-[#264cb5] to-[#1C398E] dark:bg-none dark:bg-gray-900">    
+    <Switch
+        id="theme-toggle"
+        checked={isDark}
+        onCheckedChange={toggle}
+        aria-label={`Alternar para modo ${isDark ? "claro" : "escuro"}`}
+        title={`Modo ${isDark ? "claro" : "escuro"}`}
         className={cn(
-          "absolute left-1 top-1 h-5 w-5 text-yellow-600 motion-safe:transition-opacity motion-safe:duration-300 z-10",
-          isDark ? "opacity-0" : "opacity-100"
+          "hover:scale-105 focus-visible:ring-offset-background motion-safe:transition-transform motion-safe:duration-200 border-2 border-blue-500" // Debug: Blue border to confirm rendering
         )}
-        aria-hidden="true"
-      />
-      <Moon
-        className={cn(
-          "absolute right-1 top-1 h-5 w-5 text-indigo-200 motion-safe:transition-opacity motion-safe:duration-300 z-10",
-          isDark ? "opacity-100" : "opacity-0"
-        )}
-        aria-hidden="true"
-      />
-      <span className="sr-only">Alternar tema</span>
-    </Switch></div>
+      >
+        <Sun
+          className={cn(
+            "absolute left-1 top-1 h-5 w-5 text-yellow-600 motion-safe:transition-opacity motion-safe:duration-300 z-10",
+            isDark ? "opacity-0" : "opacity-100"
+          )}
+          aria-hidden="true"
+        />
+        <Moon
+          className={cn(
+            "absolute right-1 top-1 h-5 w-5 text-indigo-200 motion-safe:transition-opacity motion-safe:duration-300 z-10",
+            isDark ? "opacity-100" : "opacity-0"
+          )}
+          aria-hidden="true"
+        />
+        <span className="sr-only">Alternar tema</span>
+      </Switch>
+  </div>
   );
 }
