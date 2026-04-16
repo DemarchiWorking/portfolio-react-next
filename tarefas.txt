@@ -1,0 +1,12 @@
+
+
+// Colocar 3 Idiomas
+// Iniciar tem q redirecionar para pagina dev e dps inicial no segundo collections_bookmark
+// as outras paginas do menu, devem deixar de ser perm_data_setting
+// terminar a pagina de portfolio
+// criar o menu de blog para conhecimentos tecnicos e de negocio (com foco em arquitetura e marketing)
+// pagina de vendas para primeiro produto do MEI / parceria
+// Formulario melhorado de contatos com email
+// Infraestrutura de backend em cloud ou vps para banco de dados, automacoes e inteligencia
+// Colocar uma foto no lugar do fundo normal em uma parte do site
+// analisar infnet para pegar melhorias de design.

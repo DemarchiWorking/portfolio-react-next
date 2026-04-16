@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaCode, FaMobileAlt, FaCloud, FaGithub } from 'react-icons/fa';
 import { IconType } from 'react-icons'; 
 import { motion, AnimatePresence } from 'framer-motion';
+import Lottie from "lottie-react";
+import animacao from "../../../../public/Engrenagem.json";
 
 const IconMap: { [key: string]: IconType } = {
     FaCode, 
@@ -93,6 +95,7 @@ const StatsItem: React.FC<{ value: string; label: string }> = ({ value, label })
 export const Sobre = () => {
     const [ativo, setAtivo] = useState<string | null>('fiap');
     const [isHoveredAWS, setIsHoveredAWS] = useState(false);
+    const [animationData, setAnimationData] = useState<any>(null);
 
     const timelineData = [
         { title: 'Engenheiro de Software', icon: 'FaCode' },
@@ -103,7 +106,7 @@ export const Sobre = () => {
     const statsData = [
         { value: '100 +', label: 'Projetos GitHub' },
         { value: '3', label: 'Formações Concluídas' },
-        { value: '7 +', label: 'Anos de Experiência' },
+        { value: '8 +', label: 'Anos de Experiência' },
     ];
 
     const projetosData = [
@@ -114,6 +117,8 @@ export const Sobre = () => {
             image: "/Mobile.png",
             linkRepo: "https://github.com/DemarchiWorking/associacao-moradores-java",
             linkLive: "https://associacao-moradores-java.vercel.app/bazar",
+            pdf: "/Vitrine-Artesanato-Digital.pdf",
+            video: "https://www.youtube.com/watch?v=CRD-w_oFgvQ"
         },
         {
             title: "Plataforma Ensino Programação Gamificada",
@@ -122,6 +127,8 @@ export const Sobre = () => {
             image: "/Pagina-Inicial.png",
             linkRepo: "https://github.com/DemarchiWorking",
             linkLive: "https://devlivery-portfolio-pb-frontend-nnq.vercel.app/inicio",
+            pdf: "/antonio_demarchi_PB_Engenharia_Disciplinada.pdf",
+            video: ""
         },
         {
             title: "App Infraestrutura - Kubernetes",
@@ -130,11 +137,18 @@ export const Sobre = () => {
             image: "/desenho.png",
             linkRepo: "https://github.com/DemarchiWorking/toggle-master-microservice-kubernetes",
             linkLive: "#",
+            pdf: "/antonio_demarchi_PB_Engenharia_Disciplinada.pdf",
+            video: ""
         }
     ];
 
     const instSelecionada = instituicoesData.find(i => i.id === ativo);
 
+    useEffect(() => {
+            fetch("/Engrenagem.json")
+                .then((res) => res.json())
+                .then((data) => setAnimationData(data));
+        }, []);
     return (
         <section className="bg-white dark:bg-[#192328] py-16 md:py-24 transition-colors duration-300 overflow-hidden">
             <div className="container mx-auto px-6 max-w-7xl">
@@ -211,25 +225,44 @@ export const Sobre = () => {
 
                     <div className="flex flex-col justify-center">
                         <h2 className="text-4xl md:text-5xl text-gray-900 dark:text-white font-bold mb-6">Sobre</h2>
-                        <p className="text-gray-600 dark:text-gray-400 mb-6 text-lg leading-relaxed">
-                            Engenheiro de Software com 8 anos de experiência prática na área, especializado em backend <span className="text-gray-100 dark:text-coral-destaque font-semibold">(.NET)</span> e 
+                        <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+                            Engenheiro de Sistemas com 8 anos de experiência prática na área, especializado em backend 
+                            <span className="text-gray-900 dark:text-gray-200 dark:text-coral-destaque font-semibold"> (.NET)</span> e 
                             
-                            <span 
+                            <a 
+                                href={isHoveredAWS ? "https://postech.fiap.com.br/curso/devops-e-arquitetura-cloud/" : undefined}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 onMouseEnter={() => setIsHoveredAWS(true)}
                                 onMouseLeave={() => setIsHoveredAWS(false)}
-                                className="dark:text-coral-destaque font-semibold cursor-help transition-all duration-300"
+                                className={`font-semibold transition-all duration-300 ${
+                                    isHoveredAWS ? " cursor-help " : "cursor-help"
+                                }`}
                             >
-                                {isHoveredAWS ? " cursando Pós Tech DevOps e Arquitetura Cloud (FIAP)" : " arquitetura de nuvem (AWS)"}
-                            </span>
-
-
-                            <br></br>Minha abordagem é Full-Cycle: atuo desde a concepção de interfaces intuitivas até o provisionamento 
-                            de infraestrutura escalável, integrando automação e observabilidade através de uma 
-                             cultura <span className="text-gray-100 dark:text-coral-destaque font-semibold"> DevOps </span> consolidada.
+                                {isHoveredAWS ? (
+                                    <>
+                                        {" cursando Pós Tech DevOps e Arquitetura Cloud "}
+                                        <span className=" text-gray-900 dark:text-gray-200 dark:text-coral-destaque">(FIAP)</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        {" arquitetura de nuvem "}
+                                        <span className="text-gray-900 dark:text-gray-200 dark:text-coral-destaque">(AWS)</span>
+                                    </>
+                                )}
+                                .
+                            </a>
                         </p>
-                        <p>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white pt-4"> Abordagem Full-Cycle</h3> 
+                        <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">Atuo desde a concepção de interfaces intuitivas até o provisionamento 
+                            de infraestrutura escalável, integrando dados, automação e observabilidade através de uma 
+                             cultura <span className="text-gray-100 dark:text-coral-destaque font-semibold"> DevOps </span>.
+                             Entrega pautada por documentação técnica e métricas de desempenho que permitem mensurar o sucesso e o impacto real de cada solução.
                         </p>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Foco em Resultados</h3> 
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white pt-4">Objetivo</h3> 
+                        <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
+                            Ser a referência técnica que impulsiona a transformação digital de parceiros através de soluções criativas, inovadoras e processos bem definidos, garantindo que os objetivos de negócio sejam atingidos com excelência.                        </p>
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-white pt-4">Foco em Resultados</h3> 
                         <p className="text-gray-600 dark:text-gray-400 mb-10 text-lg leading-relaxed">
                             Atuo com modelos de parceria baseados em Retorno sobre o Investimento (ROI), conectando tecnologia ao sucesso financeiro.
                         </p>
@@ -243,7 +276,23 @@ export const Sobre = () => {
 
                 {/* --- Seção de Projetos --- */}
                 <div className="text-center mt-24 md:mt-36 mb-16">
-                    <h2 className="text-4xl md:text-5xl text-gray-900 dark:text-white font-bold mb-4">Projetos</h2>
+    {/* Adicionado justify-center para centralizar o bloco flex na tela */}
+    <div className="flex items-center justify-center gap-4"> 
+        <div>
+            <h2 className="text-4xl md:text-5xl text-gray-900 dark:text-white font-bold mb-0">
+                Projetos
+            </h2>
+        </div>
+        <div>
+            {animationData && (
+                <div className="w-16 h-16">
+                    <Lottie animationData={animationData} loop={true} />
+                </div>
+            )}
+        </div>
+    </div>
+                     
+                   
                     <div className="w-16 h-1 mx-auto bg-blue-600 dark:bg-coral-destaque relative">
                         <div className="absolute left-1/2 transform -translate-x-1/2 -bottom-2 w-3 h-3 rounded-full bg-blue-600 dark:bg-coral-destaque"></div>
                     </div>
@@ -255,15 +304,31 @@ export const Sobre = () => {
                             key={index} 
                             className={`flex flex-col ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-12 lg:gap-20`}
                         >
-                            <div className="w-full lg:w-1/2 group">
-                                <div className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-[#1e293b] shadow-xl">
-                                    <img 
-                                        src={projeto.image} 
-                                        alt={projeto.title} 
-                                        className="w-full h-[300px] md:h-[400px] object-cover transition-transform duration-700 group-hover:scale-105"
-                                    />
-                                </div>
-                            </div>
+                                <div className="w-full lg:w-1/2 group">
+                                            <div className="relative overflow-hidden rounded-2xl border border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-[#1e293b] shadow-2xl">
+                                                {projeto.video ? (
+                                                    <a 
+                                                        href={projeto.video} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer" 
+                                                        className="cursor-pointer"
+                                                    >
+                                                        <img 
+                                                            src={projeto.image} 
+                                                            alt={projeto.title} 
+                                                            className="w-full h-[300px] md:h-[400px] object-cover transition-transform duration-500 group-hover:scale-105"
+                                                        />
+                                                    </a>
+                                                ) : (
+                                                    <img 
+                                                        src={projeto.image} 
+                                                        alt={projeto.title} 
+                                                        className="w-full h-[300px] md:h-[400px] object-cover transition-transform duration-500 group-hover:scale-105 cursor-default"
+                                                    />
+                                                )}
+                                                <div className="absolute inset-0 bg-black/5 dark:bg-black/20 group-hover:bg-transparent transition-colors duration-500 pointer-events-none" />
+                                            </div>
+                                        </div>
                             <div className="w-full lg:w-1/2 flex flex-col items-start">
                                 <div className="flex flex-wrap gap-2 mb-4">
                                     {projeto.tags.map(tag => (
@@ -272,7 +337,9 @@ export const Sobre = () => {
                                         </span>
                                     ))}
                                 </div>
-                                <h3 className="text-3xl text-gray-900 dark:text-white font-bold mb-4">{projeto.title}</h3>
+                                <a href={projeto.linkLive}>
+                                    <h3 className="text-3xl text-gray-900 dark:text-white font-bold mb-4">{projeto.title}</h3>
+                                </a>
                                 <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-8">{projeto.description}</p>
                                 <div className="flex items-center gap-6">
                                     <a 
@@ -283,6 +350,15 @@ export const Sobre = () => {
                                     >
                                         <FaGithub size={20} /> Repositório
                                     </a>
+                                    {projeto.pdf !== "" && (
+                                        <a 
+                                            href={projeto.pdf} 
+                                            download 
+                                            className="flex items-center gap-2 text-gray-200 dark:text-coral-destaque border border-gray-200/40 dark:border-coral-destaque/40 hover:bg-blue-600 dark:hover:bg-coral-destaque hover:text-white px-3 py-1 rounded transition-all font-semibold uppercase text-[12px] tracking-wider"
+                                        >
+                                            Download Documentação PDF
+                                        </a>
+                                    )}
                                 </div>
                             </div>
                         </div>
