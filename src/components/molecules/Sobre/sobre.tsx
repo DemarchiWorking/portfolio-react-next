@@ -40,7 +40,7 @@ const instituicoesData = [
         img: '/anel-engenharia.png',
         logo: '/infnet-lg.png',
         titulo: 'Engenharia de Software',
-        descricao: 'Bacharelado focado em arquitetura, backend e qualidade de software.',
+        descricao: 'Bacharelado e tecnólogo focados em arquitetura, backend e qualidade de software.',
         conquista: 'Bacharel em Engenharia'
     },
     {
@@ -49,7 +49,7 @@ const instituicoesData = [
         artefato: 'Caneta',
         img: '/caneta.png',
         logo: '/fiap-logo.png',
-        titulo: 'Pós-Tech DevOps & Cloud',
+        titulo: 'Pós-Tech DevOps & Arquitetura Cloud',
         descricao: 'Especialização em AWS, Kubernetes e automação de infraestrutura escalável.',
         conquista: 'Pós-Graduação em Cloud'
     }
@@ -91,7 +91,7 @@ const StatsItem: React.FC<{ value: string; label: string }> = ({ value, label })
 // --- Componente Principal ---
 
 export const Sobre = () => {
-    const [ativo, setAtivo] = useState<string | null>(null);
+    const [ativo, setAtivo] = useState<string | null>('fiap');
     const [isHoveredAWS, setIsHoveredAWS] = useState(false);
 
     const timelineData = [
@@ -215,12 +215,12 @@ export const Sobre = () => {
                             Engenheiro de Software com 8 anos de experiência prática na área, especializado em backend <span className="text-gray-100 dark:text-coral-destaque font-semibold">(.NET)</span> e 
                             
                             <span 
-    onMouseEnter={() => setIsHoveredAWS(true)}
-    onMouseLeave={() => setIsHoveredAWS(false)}
-    className="dark:text-coral-destaque font-semibold cursor-help transition-all duration-300"
->
-    {isHoveredAWS ? " cursando Pós Tech DevOps e Arquitetura Cloud (FIAP)" : " arquitetura de nuvem (AWS)"}
-</span>
+                                onMouseEnter={() => setIsHoveredAWS(true)}
+                                onMouseLeave={() => setIsHoveredAWS(false)}
+                                className="dark:text-coral-destaque font-semibold cursor-help transition-all duration-300"
+                            >
+                                {isHoveredAWS ? " cursando Pós Tech DevOps e Arquitetura Cloud (FIAP)" : " arquitetura de nuvem (AWS)"}
+                            </span>
 
 
                             <br></br>Minha abordagem é Full-Cycle: atuo desde a concepção de interfaces intuitivas até o provisionamento 
