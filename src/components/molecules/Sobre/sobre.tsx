@@ -150,7 +150,7 @@ export const Sobre = () => {
                             />
                         ))}
 
-                        <div className="mt-10">
+                        <div className="mt-2">
                             <section className="instituicoes-section flex flex-col items-center lg:items-start">
                                 <h3 className="text-gray-500 dark:text-gray-400 font-black text-xs tracking-[0.2em] mb-6 uppercase w-full text-center lg:text-left">
                                     ARTEFATOS ACADÊMICOS
