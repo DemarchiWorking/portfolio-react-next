@@ -20,7 +20,7 @@ const instituicoesData = [
         img: '/oculos.png',
         logo: '/ifrj-logo.png',
         titulo: 'Técnico em Informática para Internet',
-        descricao: 'Base sólida em desenvolvimento web e infraestrutura iniciada em 2016.',
+        descricao: 'Base sólida em desenvolvimento web e infraestrutura iniciada em 2013.',
         conquista: 'Formação Técnica Federal'
     },
     {
