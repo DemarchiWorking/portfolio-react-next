@@ -166,7 +166,7 @@ export const Sobre = () => {
 
                         <div className="mt-2">
                             <section className="instituicoes-section flex flex-col items-center lg:items-start">
-                                <h3 className="text-gray-500 dark:text-gray-400 font-black text-xs tracking-[0.2em] mb-6 uppercase w-full text-center lg:text-left">
+                                <h3 className="text-gray-500 pt-4 dark:text-gray-400 font-black text-xs tracking-[0.2em] mb-6 uppercase w-full text-center lg:text-left">
                                     ARTEFATOS ACADÊMICOS
                                 </h3>
                                 
@@ -275,22 +275,22 @@ export const Sobre = () => {
                 </div>
 
                 {/* --- Seção de Projetos --- */}
-                <div className="text-center mt-24 md:mt-36 mb-16">
-    {/* Adicionado justify-center para centralizar o bloco flex na tela */}
-    <div className="flex items-center justify-center gap-4"> 
-        <div>
-            <h2 className="text-4xl md:text-5xl text-gray-900 dark:text-white font-bold mb-0">
-                Projetos
-            </h2>
-        </div>
-        <div>
-            {animationData && (
-                <div className="w-16 h-16">
-                    <Lottie animationData={animationData} loop={true} />
-                </div>
-            )}
-        </div>
-    </div>
+                <div className="text-center mt-12 md:mt-24 mb-16">
+                    {/* Adicionado justify-center para centralizar o bloco flex na tela */}
+                    <div className="flex items-center justify-center gap-4"> 
+                        <div>
+                            <h2 className="text-4xl md:text-5xl text-gray-900 dark:text-white font-bold mb-0">
+                                Projetos
+                            </h2>
+                        </div>
+                        <div>
+                            {animationData && (
+                                <div className="w-16 h-16">
+                                    <Lottie animationData={animationData} loop={true} />
+                                </div>
+                            )}
+                        </div>
+                    </div>
                      
                    
                     <div className="w-16 h-1 mx-auto bg-blue-600 dark:bg-coral-destaque relative">
