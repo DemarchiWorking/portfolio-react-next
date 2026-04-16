@@ -54,6 +54,7 @@ const PROJECTS: Project[] = [
     isLocked: true,
     tags: ["Terraform","Kubernetes","AWS", "Docker", "Go", "Python"],
   },
+  /*
   {
     id: "crea-sp",
     title: "CREA-SP",
@@ -61,7 +62,7 @@ const PROJECTS: Project[] = [
     description: "Funcionalidades para facilitar a vida de engenheiros do CREA-SP.",
     isLocked: true,
     tags: ["Google Cloud", "Firebase", "Javascript", "React"],
-  },
+  },*/
   {
     id: "neuro-lead",
     title: "Inteligência Comercial - Pré vendas",
