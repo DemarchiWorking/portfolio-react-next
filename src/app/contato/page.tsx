@@ -142,7 +142,10 @@ export default function Contato() {
                   <p className="text-muted-foreground text-sm">Clique para abrir o formulário profissional</p>
                 </button>
               </motion.div>
-              
+
+              <div className="pt-4 pb-2">
+                <br></br>
+              </div>
               {/* Estrutura de Tabela Moderna (Sem alterações) */}
               <motion.div 
                 variants={itemVariants}
