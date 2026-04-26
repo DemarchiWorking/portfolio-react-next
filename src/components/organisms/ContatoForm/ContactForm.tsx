@@ -106,7 +106,7 @@ export function ContactForm({ accessKey }: ContactFormProps) {
               whileTap={{ scale: 0.98 }}
               disabled={status === "loading"}
               type="submit"
-              className="w-full py-5 rounded-2xl bg-foreground text-background font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:opacity-90 disabled:opacity-50 transition-all shadow-lg shadow-pink-500/10 cursor-pointer"
+              className="w-full py-5 cursor-pointer rounded-2xl bg-foreground text-background font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:opacity-90 disabled:opacity-50 transition-all shadow-lg shadow-pink-500/10 cursor-pointer"
             >
               {status === "loading" ? (
                 <Loader2 className="animate-spin" size={24} />

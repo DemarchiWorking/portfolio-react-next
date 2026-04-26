@@ -176,10 +176,11 @@ export default function Contato() {
               </motion.div>
 
               {/* BOTÃO MODERNO PARA ATIVAR FORMULÁRIO */}
-              <motion.div variants={itemVariants} className="mt-12">
+              <motion.div variants={itemVariants} className="mt-12" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+              >
                 <button
                   onClick={() => setIsFormActive(true)}
-                  className="group relative w-full py-8 rounded-3xl border border-pink-500/30 bg-card/50 hover:bg-card transition-all overflow-hidden flex flex-col items-center justify-center gap-3 shadow-2xl"
+                  className="group relative  w-full py-8 cursor-pointer rounded-3xl border border-pink-500/30 bg-card/50 hover:bg-card transition-all overflow-hidden flex flex-col items-center justify-center gap-3 shadow-2xl"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
                   <div className="flex items-center gap-2 text-pink-500 font-bold uppercase tracking-[0.3em] text-xs">
