@@ -208,7 +208,7 @@ export default function Contato() {
                 <p className="text-muted-foreground italic">Isso enviará um e-mail diretamente para Antonio Demarchi.</p>
               </header>
 
-              <ContactForm accessKey="SUA_CHAVE_AQUI" />
+              <ContactForm accessKey="ce53cd00-65c0-484a-afe0-9812d156df7e" />
             </motion.div>
           )}
         </AnimatePresence>
