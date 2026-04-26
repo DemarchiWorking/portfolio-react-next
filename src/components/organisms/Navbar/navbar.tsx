@@ -53,7 +53,7 @@ export const Navbar = () => {
             </button>
 
                 
-            <a href="https://www.linkedin.com/in/demarchi1">
+            <a href="/chamado">
                 <button className={styles['btn-default']}>
                     Contatar
                 </button>
