@@ -1,11 +1,19 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
-import { Mail, Linkedin, Github, MessageCircle, ExternalLink, ArrowLeft } from "lucide-react";
+import { Mail, Linkedin, Github, MessageCircle, ExternalLink, ArrowLeft, Instagram } from "lucide-react";
 import { ThemeToggle } from "@/components/molecules/theme-toggle";
 
 export default function Contato() {
   const contactData = [
+      {
+      label: "Instagram",
+      value: "@labdatadev", 
+      href: "https://instagram.com/labdatadev", 
+      icon: <Instagram size={20} />,
+      actionText: "Seguir",
+      color: "hover:text-pink-500" 
+    },
     {
       label: "LinkedIn",
       value: "https://www.linkedin.com/in/demarchi1",
@@ -108,6 +116,7 @@ export default function Contato() {
               </thead>
               <tbody className="divide-y divide-border">
                 {contactData.map((item, index) => (
+
                   <motion.tr 
                     key={index} 
                     variants={itemVariants}

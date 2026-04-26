@@ -10,3 +10,4 @@
 // Infraestrutura de backend em cloud ou vps para banco de dados, automacoes e inteligencia
 // Colocar uma foto no lugar do fundo normal em uma parte do site
 // analisar infnet para pegar melhorias de design.
+// corrigir o DevOps transparente na inicial
