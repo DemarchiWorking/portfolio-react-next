@@ -13,7 +13,7 @@ import {
   Sparkles 
 } from "lucide-react";
 import { ThemeToggle } from "@/components/molecules/theme-toggle";
-import { ContactForm } from "@/components/organisms/ContactForm/ContactForm";
+import { ContactForm } from "@/components/organisms/ContatoForm/ContactForm"
 
 export default function Contato() {
   // Estado para controlar a transição entre Tabela e Formulário
