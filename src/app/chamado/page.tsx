@@ -32,6 +32,7 @@ export default function Chamado() {
               className="w-full flex flex-col gap-8"
             >
               <header className="space-y-2">
+                <div className="pt-2 pb-2"></div>
                 <h2 className="text-3xl font-bold tracking-tighter">Formulário de Contato</h2>
                 <p className="text-muted-foreground italic">Isso enviará um e-mail diretamente para Antonio Demarchi.</p>
               </header>
