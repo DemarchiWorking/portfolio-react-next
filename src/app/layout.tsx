@@ -50,20 +50,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
        * para que o GTM não dispare nenhuma tag de publicidade sem permissão.
        * Compatível com LGPD e Google Consent Mode v2 (Março 2024+).
        */}
-      <Script id="consent-init" strategy="beforeInteractive">{`
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        var _consent = null;
-        try { _consent = localStorage.getItem('lgpd_consent'); } catch(e){}
-        var _state = _consent === 'accepted' ? 'granted' : 'denied';
-        gtag('consent', 'default', {
-          ad_storage:         _state,
-          analytics_storage:  _state,
-          ad_user_data:       _state,
-          ad_personalization: _state,
-          wait_for_update:    _consent === null ? 2000 : 0
-        });
-      `}</Script>
 
       {/* GTM — carrega de forma lazy, respeita o consent acima */}
       {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
