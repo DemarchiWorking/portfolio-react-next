@@ -43,6 +43,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
+        
+        <meta name="facebook-domain-verification" content="4hrkbsbjmpneh5onnzmt955toahkrj" />
+
         {/* 1. Google Consent Mode v2 — OBRIGATÓRIO ANTES DO GTM */}
         <Script id="google-consent-mode" strategy="beforeInteractive">
           {`
