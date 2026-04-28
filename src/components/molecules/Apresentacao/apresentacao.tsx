@@ -1,8 +1,9 @@
-"use client"; 
-import React from 'react';
-import { motion, Variants } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import Botao from '@/components/atoms/Botao-Primary/botao';
+'use client'
+import React from 'react'
+import { motion, Variants } from 'framer-motion'
+import { ArrowRight } from 'lucide-react'
+import Botao from '@/components/atoms/Botao-Primary/botao'
+import { useMetaEvents } from '@/hooks/useMetaEvents'
 
 // --- Tipagem de Dados (Essencial para este componente) ---
 interface HeroData {
@@ -48,6 +49,8 @@ const itemVariants: Variants = {
  * utilizando animações Framer Motion.
  */
 export const Apresentacao = () => {
+    const { trackCTAClick, trackCVDownload } = useMetaEvents()
+
     return (
         // O fundo escuro e a altura mínima ocupam a tela
         <motion.section
@@ -129,15 +132,19 @@ export const Apresentacao = () => {
                     </motion.div>*/}
                     <motion.div>
                             <div className="flex space-x-4">
-                                <a href="/portfolio">
-                                    <Botao variant="primary" onClick={() => console.log('Navegar para projetos')}
-                                        >Meus projetos  <ArrowRight className="ml-2 w-4" />
+                                <a
+                                    href="/portfolio"
+                                    onClick={() => trackCTAClick('hero_meus_projetos', '/portfolio')}
+                                >
+                                    <Botao variant="primary">
+                                        Meus projetos <ArrowRight className="ml-2 w-4" />
                                     </Botao>
                                 </a>
 
-                                <a 
-                                    href="/CurriculoEngenheiroAntonioDemarchi.pdf" 
+                                <a
+                                    href="/CurriculoEngenheiroAntonioDemarchi.pdf"
                                     download="CurriculoEngenheiroAntonioDemarchi.pdf"
+                                    onClick={() => trackCVDownload()}
                                 >
                                     <Botao variant="secondary">
                                         Resumo

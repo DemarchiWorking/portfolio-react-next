@@ -1,0 +1,889 @@
+################################################################################
+#                                                                              #
+#       INICIA.TXT — GUIA COMPLETO DE REMARKETING                              #
+#       Projeto: portfoliodemarchi.com.br                                      #
+#       Stack:   Next.js 16 · TypeScript · GTM · Meta Pixel + CAPI            #
+#       Gerado:  2026-04-28                                                    #
+#                                                                              #
+################################################################################
+
+
+================================================================================
+# 1. RESUMO DA IMPLEMENTAÇÃO DE REMARKETING
+================================================================================
+
+## Objetivo Principal
+
+Capturar 100% do tráfego vindo do Instagram (Stories, Reels, Ads pagos),
+persistir os dados de atribuição por 7 dias em cookies de primeira parte,
+qualificar visitantes por comportamento (scroll + tempo) e disparar todos os
+eventos com qualidade máxima de sinal para o Meta — via Pixel (client-side) e
+Meta Conversions API / CAPI (server-side) com deduplicação perfeita —
+criando audiências de retargeting prontas para uso na semana seguinte.
+
+## Fluxo Resumido
+
+  Instagram "Saiba Mais"
+        ↓ (utm_source=instagram&fbclid=XXX adicionado automaticamente pelo Meta)
+  portfoliodemarchi.com.br/?utm_source=instagram&fbclid=IwAR3...
+        ↓
+  useInstagramTracker detecta tráfego IG
+        ├─ gera _fbc = "fb.1.{timestamp}.{fbclid}"
+        ├─ persiste cookies por 7 dias (UTMs + fbclid + session_id)
+        ├─ pushEvent(Visitante_Instagram) → GTM → Meta Pixel     [client]
+        └─ POST /api/track → Meta CAPI (mesmo event_id)          [server]
+        ↓
+  Usuário navega pelo site
+        ├─ Scroll 50% → ScrollDepth_50 → GTM → Pixel
+        ├─ Scroll 90% → ScrollDepth_90 → GTM → Pixel
+        ├─ 60s na página → TimeOnPage_60s → GTM → Pixel
+        └─ Clique em CTA → CTA_Clicado → GTM → Pixel
+        ↓
+  Submit do formulário → Lead + Contact (Pixel + CAPI)
+        ↓
+  Meta Ads Manager: público "Visitou sem Lead — 7d"
+        ↓
+  Semana seguinte: retargeting automático
+
+## Principais Melhorias Sobre o Projeto Anterior (demarchi-mei-site)
+
+  Antes (demarchi-mei-site)              Agora (portfolio-demarchi)
+  ─────────────────────────────          ─────────────────────────────────────
+  Detecta só utm_source=instagram_story  Detecta fbclid, 6 variações de source,
+                                         referrer de instagram.com/facebook.com
+
+  UTMs somem ao navegar para outra rota  Cookies de 7 dias (demarchi_attr)
+                                         + demarchi_sid + _fbc persistem
+
+  Zero Meta CAPI (só Pixel client)       CAPI via Route Handler /api/track
+                                         com IP, User-Agent, _fbc, _fbp reais
+
+  Sem deduplicação                       event_id UUID v4 compartilhado:
+                                         Pixel + CAPI → Meta deduplica perfeito
+
+  Sem scroll depth                       ScrollDepth_50 e ScrollDepth_90
+                                         com reset por rota (App Router)
+
+  Sem time-on-page                       TimeOnPage_30s / 60s / 120s
+                                         com reset por rota
+
+  Sem Consent Mode v2                    Script beforeInteractive + banner LGPD
+                                         completo com 4 sinalizadores v2
+
+  Sem página de obrigado                 /obrigado confirma Lead server-side
+                                         e dispara evento na chegada
+
+  Zero hash de PII                       SHA-256 automático para email/telefone
+                                         no Route Handler (crypto.subtle nativo)
+
+
+================================================================================
+# 2. LISTA COMPLETA DE ARQUIVOS CRIADOS / MODIFICADOS
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+## ARQUIVOS NOVOS (criados do zero)
+────────────────────────────────────────────────────────────────────────────────
+
+──────────────────────────────────────────────────
+ARQUIVO: .env.example
+Tipo: Novo
+Propósito: Template documentado de variáveis de ambiente obrigatórias.
+──────────────────────────────────────────────────
+
+  [CONFIGURAR] Copie para .env.local e preencha com valores reais:
+
+    NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX              ← seu container GTM
+    NEXT_PUBLIC_META_PIXEL_ID=123456789012345   ← ID do Pixel Meta (15 dígitos)
+    META_CAPI_ACCESS_TOKEN=EAAxxxxxxxx...       ← token do System User (200+ chars)
+    META_CAPI_TEST_EVENT_CODE=TEST12345         ← só em dev — remova em produção
+    NEXT_PUBLIC_SITE_URL=https://portfoliodemarchi.com.br
+
+──────────────────────────────────────────────────
+ARQUIVO: src/types/tracking.ts
+Tipo: Novo
+Propósito: Contratos TypeScript de todos os eventos, payloads e tipos de consent.
+──────────────────────────────────────────────────
+
+  Não requer alterações para uso básico.
+
+  [ALTERAR PARA SEU PROJETO] Se quiser adicionar novos eventos, adicione à
+  union type TrackingEventName. Cada novo nome aqui precisa de um Acionador
+  + Tag correspondentes no GTM (sem deploy de código).
+
+  Exemplo para adicionar evento WhatsApp:
+    | 'WhatsApp_Clicado'   ← adicione aqui
+  Depois no componente: trackOutboundLink('whatsapp', 'https://wa.me/...')
+
+──────────────────────────────────────────────────
+ARQUIVO: src/lib/attribution.ts
+Tipo: Novo
+Propósito: Lógica de cookies de atribuição, detecção de tráfego Instagram,
+           geração de UUID, construção do _fbc no formato oficial Meta.
+──────────────────────────────────────────────────
+
+  [ALTERAR PARA SEU PROJETO] Constantes de cookies no topo do arquivo:
+
+    const ATTR_COOKIE    = 'demarchi_attr'    ← [ALTERAR] prefixo do projeto
+    const SESSION_COOKIE = 'demarchi_sid'     ← [ALTERAR] prefixo do projeto
+    const COOKIE_DAYS    = 7                  ← [ALTERAR] duração em dias (padrão: 7)
+
+  [ALTERAR PARA SEU PROJETO] Lista de fontes reconhecidas como Instagram:
+
+    const IG_SOURCES = [
+      'instagram', 'instagram_story', 'instagram_paid',
+      'instagram_ad', 'instagram_reel', 'fb', 'facebook',
+    ]
+    ← adicione outras variações do utm_source que você usar nas campanhas
+
+──────────────────────────────────────────────────
+ARQUIVO: src/lib/dataLayer.ts
+Tipo: Novo
+Propósito: Wrapper sobre sendGTMEvent, updateConsent para Consent Mode v2,
+           sendToCAPI com fetch keepalive para o Route Handler.
+──────────────────────────────────────────────────
+
+  Não requer alterações.
+
+──────────────────────────────────────────────────
+ARQUIVO: src/hooks/useInstagramTracker.ts
+Tipo: Novo
+Propósito: Hook principal. Detecta tráfego IG, persiste cookies, dispara
+           Visitante_Instagram via Pixel + CAPI com o mesmo event_id.
+──────────────────────────────────────────────────
+
+  Não requer alterações.
+  Usa sessionStorage para prevenir disparo duplo na mesma aba (refresh).
+  Limpa automaticamente ao fechar a aba — próxima sessão dispara novamente.
+
+──────────────────────────────────────────────────
+ARQUIVO: src/hooks/useMetaEvents.ts
+Tipo: Novo
+Propósito: API pública de eventos tipados — use nos componentes do site.
+           Funções: trackLead, trackCTAClick, trackCVDownload, trackViewContent,
+           trackContact, trackOutboundLink.
+──────────────────────────────────────────────────
+
+  [ALTERAR PARA SEU PROJETO] Para usar em qualquer componente:
+
+    import { useMetaEvents } from '@/hooks/useMetaEvents'
+
+    const { trackLead, trackCTAClick } = useMetaEvents()
+
+    // Botão de WhatsApp:
+    onClick={() => trackLead('hero_whatsapp')}
+
+    // Botão de portfólio:
+    onClick={() => trackCTAClick('hero_portfolio', '/portfolio')}
+
+──────────────────────────────────────────────────
+ARQUIVO: src/hooks/useScrollTracker.ts
+Tipo: Novo
+Propósito: Dispara ScrollDepth_50 e ScrollDepth_90 via listener passivo.
+           Reset automático por rota via usePathname (App Router).
+──────────────────────────────────────────────────
+
+  Não requer alterações.
+
+──────────────────────────────────────────────────
+ARQUIVO: src/hooks/useTimeOnPage.ts
+Tipo: Novo
+Propósito: Dispara TimeOnPage_30s / 60s / 120s via setTimeout.
+           Reset automático por rota via usePathname.
+──────────────────────────────────────────────────
+
+  [ALTERAR PARA SEU PROJETO] Para adicionar ou remover milestones:
+
+    const MILESTONES = [
+      { seconds: 30,  event: 'TimeOnPage_30s'  },   ← remova se não quiser
+      { seconds: 60,  event: 'TimeOnPage_60s'  },
+      { seconds: 120, event: 'TimeOnPage_120s' },
+      { seconds: 300, event: 'TimeOnPage_5min' },    ← adicione se quiser
+    ]
+
+──────────────────────────────────────────────────
+ARQUIVO: src/components/tracking/InstagramTracker.tsx
+Tipo: Novo
+Propósito: Wrapper com <Suspense> obrigatório para uso de useSearchParams()
+           no App Router. Renderiza null — zero impacto visual.
+           Agrupa os 3 hooks: useInstagramTracker + useScrollTracker + useTimeOnPage.
+──────────────────────────────────────────────────
+
+  Não requer alterações.
+
+──────────────────────────────────────────────────
+ARQUIVO: src/components/tracking/ConsentBanner.tsx
+Tipo: Novo
+Propósito: Banner LGPD com Consent Mode v2 completo (4 sinalizadores).
+           Armazena escolha em localStorage. Dispara updateConsent() ao decidir.
+           Aparece só na primeira visita, sem flash de hidratação.
+──────────────────────────────────────────────────
+
+  [ALTERAR PARA SEU PROJETO] Texto e link de política de privacidade:
+
+    Usamos cookies próprios para análise de visitas e remarketing.
+    ← [ALTERAR] adapte o texto para seu contexto legal
+
+    href="/privacidade"    ← [ALTERAR] crie a página /privacidade ou altere o link
+
+  [ALTERAR PARA SEU PROJETO] Estilo dos botões (Tailwind):
+    - "Aceitar todos" usa bg-blue-700 — altere para a cor primária do seu projeto
+    - "Recusar" usa border border-slate-600 — ajuste ao tema
+
+──────────────────────────────────────────────────
+ARQUIVO: src/app/api/track/route.ts
+Tipo: Novo
+Propósito: Route Handler POST /api/track — envia eventos ao Meta CAPI.
+           Lê IP (x-forwarded-for), User-Agent, _fbc e _fbp dos cookies
+           server-side. Aplica SHA-256 em PII (email/telefone) se enviados.
+──────────────────────────────────────────────────
+
+  Não requer alterações no código.
+  Toda configuração é via variáveis de ambiente (.env.local).
+
+  Endpoint interno usado pelo sendToCAPI() de dataLayer.ts.
+  Nunca exponha META_CAPI_ACCESS_TOKEN no frontend.
+
+──────────────────────────────────────────────────
+ARQUIVO: src/app/obrigado/page.tsx
+Tipo: Novo
+Propósito: Página de conversão confirmada. Dispara evento Lead via Pixel + CAPI
+           na chegada. Exibe mensagem de sucesso e links para voltar ao site.
+──────────────────────────────────────────────────
+
+  [ALTERAR PARA SEU PROJETO] Texto da mensagem de obrigado:
+
+    "Obrigado pelo contato. Antonio vai retornar em até 2 horas em dias úteis."
+    ← [ALTERAR] adapte para seu nome e SLA de resposta
+
+  Para redirecionar o formulário para /obrigado ao invés de mostrar
+  mensagem inline, no ContactForm.tsx substitua:
+    setStatus('success')
+  por:
+    router.push('/obrigado?source=contact_form')
+  (adicione: import { useRouter } from 'next/navigation')
+
+
+────────────────────────────────────────────────────────────────────────────────
+## ARQUIVOS MODIFICADOS (alterações cirúrgicas nos existentes)
+────────────────────────────────────────────────────────────────────────────────
+
+──────────────────────────────────────────────────
+ARQUIVO: src/app/layout.tsx
+Tipo: Modificado
+Propósito: Adicionados Script consent-init (beforeInteractive), GoogleTagManager,
+           InstagramTracker e ConsentBanner. Atualizada metadata.
+──────────────────────────────────────────────────
+
+  [CONFIGURAR] Metadata: altere title e description para seu contexto:
+
+    title: {
+      default: 'Antonio Demarchi | Engenheiro de Software · .NET · AWS · DevOps',
+      ← [ALTERAR] seu nome e especialidades
+    }
+    description: 'Engenheiro de Software com 8+ anos...'
+    ← [ALTERAR] sua bio profissional
+
+  [CONFIGURAR] O GTM só carrega se NEXT_PUBLIC_GTM_ID estiver definido:
+    const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID ?? ''
+    ← se deixar vazio, GTM não carrega (útil para dev sem GTM configurado)
+
+──────────────────────────────────────────────────
+ARQUIVO: src/components/molecules/Apresentacao/apresentacao.tsx
+Tipo: Modificado
+Propósito: Adicionados trackCTAClick no botão "Meus projetos" e
+           trackCVDownload no botão "Resumo" (download do CV).
+──────────────────────────────────────────────────
+
+  Alterações foram:
+    - import { useMetaEvents } from '@/hooks/useMetaEvents'
+    - const { trackCTAClick, trackCVDownload } = useMetaEvents()
+    - onClick={() => trackCTAClick('hero_meus_projetos', '/portfolio')}
+    - onClick={() => trackCVDownload()}
+
+  [ALTERAR PARA SEU PROJETO] Nome do evento CTA:
+    'hero_meus_projetos' → use nomes descritivos para identificar no GTM/Meta
+    Exemplos: 'hero_saiba_mais', 'hero_portfolio', 'hero_contato'
+
+──────────────────────────────────────────────────
+ARQUIVO: src/components/organisms/Navbar/navbar.tsx
+Tipo: Modificado
+Propósito: Adicionado trackCTAClick no botão "Contatar" da Navbar.
+──────────────────────────────────────────────────
+
+  [ALTERAR PARA SEU PROJETO] Nome do evento CTA:
+    'navbar_contatar' → altere se o botão se chamar diferente no seu projeto
+
+──────────────────────────────────────────────────
+ARQUIVO: src/components/organisms/ContatoForm/ContactForm.tsx
+Tipo: Modificado
+Propósito: Adicionados trackLead('contact_form') e trackContact('contact_form')
+           no callback de sucesso do Web3Forms — dispara Lead + CAPI.
+──────────────────────────────────────────────────
+
+  [ALTERAR PARA SEU PROJETO] Se seu formulário usar outro serviço (não Web3Forms),
+  adicione as chamadas de tracking no callback de sucesso equivalente:
+
+    // Exemplo com EmailJS:
+    emailjs.sendForm(...).then(() => {
+      trackLead('contact_form')
+      trackContact('contact_form')
+    })
+
+  [CONFIGURAR] access_key do Web3Forms:
+    O componente recebe accessKey via prop — configure na página /contato:
+    <ContactForm accessKey="SUA_ACCESS_KEY_WEB3FORMS" />
+
+
+================================================================================
+# 3. TUTORIAL COMPLETO: COMO CONFIGURAR E RODAR DE PRIMEIRA
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+## ETAPA 0 — Pré-requisitos de contas (faça ANTES de codar)
+────────────────────────────────────────────────────────────────────────────────
+
+### 0.1 — Criar Pixel no Meta Business Suite
+
+  URL: business.facebook.com
+
+  1. Acesse Configurações do Business → Fontes de dados → Pixels
+  2. Clique em "Adicionar" → "Pixel do Meta"
+  3. Nomeie: "Pixel portfoliodemarchi"
+  4. Escolha "Conectar manualmente" (não usar integração automática)
+  5. COPIE o Pixel ID (número de 15 dígitos exibido na tela)
+     → Este é o NEXT_PUBLIC_META_PIXEL_ID
+
+### 0.2 — Gerar Token da Conversions API (CAPI)
+
+  URL: business.facebook.com
+
+  1. Configurações do Business → Usuários → Usuários do sistema
+  2. Crie um "Usuário do sistema administrador" se não existir
+  3. Clique no usuário → "Gerar novo token"
+  4. Selecione o Pixel criado no 0.1
+  5. Permissões necessárias: ads_management, business_management
+  6. COPIE o token (começa com EAA, tem 200+ caracteres)
+     → Este é o META_CAPI_ACCESS_TOKEN
+
+  ATENÇÃO: Este token nunca vai para o frontend. Fica só no .env.local
+  e é lido apenas pelo Route Handler /api/track (server-side).
+
+### 0.3 — Obter código de teste CAPI (opcional, recomendado para dev)
+
+  URL: business.facebook.com → Events Manager → seu Pixel → Testar Eventos
+
+  1. Clique em "Testar Eventos no servidor"
+  2. Copie o código TEST... exibido
+     → Este é o META_CAPI_TEST_EVENT_CODE
+
+  Com esse código, seus eventos de teste aparecem no Events Manager em
+  tempo real sem poluir os dados reais do Pixel.
+
+### 0.4 — Criar container GTM
+
+  URL: tagmanager.google.com
+
+  1. Crie uma Conta → Container → tipo: Web
+  2. Nome do container: portfoliodemarchi.com.br
+  3. NÃO instale o snippet manualmente (o Next.js faz via GoogleTagManager)
+  4. COPIE o GTM ID (formato GTM-XXXXXXX, canto superior direito)
+     → Este é o NEXT_PUBLIC_GTM_ID
+
+────────────────────────────────────────────────────────────────────────────────
+## ETAPA 1 — Configurar o projeto localmente
+────────────────────────────────────────────────────────────────────────────────
+
+### 1.1 — Clonar e entrar na pasta
+
+  git clone https://github.com/DemarchiWorking/portfolio-react-next.git portfolio-demarchi
+  cd portfolio-demarchi
+
+### 1.2 — Instalar dependências
+
+  npm install
+
+  Dependências de tracking já no package.json após a implementação:
+    @next/third-parties  ^16.2.4   ← GoogleTagManager lazy load
+    js-cookie            ^3.0.5    ← cookies de 1ª parte
+    @types/js-cookie     ^3.0.6    ← tipagem TypeScript
+
+### 1.3 — Criar .env.local
+
+  cp .env.example .env.local
+
+  Edite .env.local com os valores reais coletados na Etapa 0:
+
+  ┌─────────────────────────────────────────────────────────────────┐
+  │  NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX          ← [CONFIGURAR]         │
+  │  NEXT_PUBLIC_META_PIXEL_ID=123456789...  ← [CONFIGURAR]         │
+  │  META_CAPI_ACCESS_TOKEN=EAAxxxxxxxx...   ← [CONFIGURAR]         │
+  │  META_CAPI_TEST_EVENT_CODE=TEST12345     ← [CONFIGURAR]         │
+  │  NEXT_PUBLIC_SITE_URL=https://portfolio… ← [CONFIGURAR]         │
+  └─────────────────────────────────────────────────────────────────┘
+
+  REGRAS IMPORTANTES:
+  - Variáveis NEXT_PUBLIC_* são expostas no browser — não coloque secrets
+  - META_CAPI_ACCESS_TOKEN sem NEXT_PUBLIC_ = server-only = seguro
+  - .env.local está no .gitignore — nunca comite esse arquivo
+
+### 1.4 — Rodar em desenvolvimento
+
+  npm run dev
+  → Acesse http://localhost:3000
+
+### 1.5 — Verificar build de produção
+
+  npm run build && npm start
+
+  Saída esperada:
+    Route (app)
+    ├ ○ /
+    ├ ƒ /api/track    ← Dynamic (server) — correto, é o CAPI handler
+    ├ ○ /contato
+    ├ ○ /obrigado
+    └ ...
+
+────────────────────────────────────────────────────────────────────────────────
+## ETAPA 2 — Configurar o GTM container
+────────────────────────────────────────────────────────────────────────────────
+
+Acesse: tagmanager.google.com → seu container
+
+### 2.1 — Criar Variável Constante: PIXEL_ID
+
+  Variáveis → Constantes do Usuário → Nova
+  Tipo: Constante
+  Nome: PIXEL_ID
+  Valor: [CONFIGURAR] seu Pixel ID de 15 dígitos (ex: 123456789012345)
+  Salve.
+
+### 2.2 — Criar Variáveis da Camada de Dados
+
+  Para cada linha abaixo, crie: Variáveis → Nova → Variável da Camada de Dados
+
+  ┌─────────────────────────────┬──────────────────┬─────────┐
+  │ Nome no GTM                 │ Chave na DL      │ Versão  │
+  ├─────────────────────────────┼──────────────────┼─────────┤
+  │ dlv - event_id              │ event_id         │ 2       │
+  │ dlv - session_id            │ session_id       │ 2       │
+  │ dlv - utm_source            │ utm_source       │ 2       │
+  │ dlv - utm_medium            │ utm_medium       │ 2       │
+  │ dlv - utm_campaign          │ utm_campaign     │ 2       │
+  │ dlv - utm_content           │ utm_content      │ 2       │
+  │ dlv - fbclid                │ fbclid           │ 2       │
+  │ dlv - lead_source           │ lead_source      │ 2       │
+  │ dlv - depth                 │ depth            │ 2       │
+  └─────────────────────────────┴──────────────────┴─────────┘
+
+### 2.3 — Criar Acionadores
+
+  Para cada acionador: Acionadores → Novo
+
+  ┌──────────────────────────────────┬──────────────────────┬──────────────────────────────┐
+  │ Nome do Acionador                │ Tipo                 │ Configuração                 │
+  ├──────────────────────────────────┼──────────────────────┼──────────────────────────────┤
+  │ Custom - Visitante_Instagram     │ Evento personalizado │ Nome: Visitante_Instagram    │
+  │ Custom - Lead                    │ Evento personalizado │ Nome: Lead                   │
+  │ Custom - Contact                 │ Evento personalizado │ Nome: Contact                │
+  │ Custom - CTA_Clicado             │ Evento personalizado │ Nome: CTA_Clicado            │
+  │ Custom - CV_Download             │ Evento personalizado │ Nome: CV_Download            │
+  │ Scroll - 50%                     │ Profundidade rolagem │ 50% vertical, todas páginas  │
+  │ Scroll - 90%                     │ Profundidade rolagem │ 90% vertical, todas páginas  │
+  └──────────────────────────────────┴──────────────────────┴──────────────────────────────┘
+
+  Para os acionadores de Evento personalizado:
+    "Esse acionador é ativado em" → Todos os eventos personalizados
+
+### 2.4 — Criar Tags
+
+  ─────────────────────────────────────────────────────
+  TAG 1: Meta Pixel — Base (All Pages)
+  Tipo: HTML Personalizado
+  Prioridade: 10   ← OBRIGATÓRIO — precisa carregar antes das outras tags
+  Acionador: All Pages (Todas as Páginas)
+  ─────────────────────────────────────────────────────
+
+  HTML:
+  ┌────────────────────────────────────────────────────────────────────┐
+  │ <script>                                                            │
+  │   !function(f,b,e,v,n,t,s)                                         │
+  │   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?                │
+  │   n.callMethod.apply(n,arguments):n.queue.push(arguments)};        │
+  │   if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';      │
+  │   n.queue=[];t=b.createElement(e);t.async=!0;                      │
+  │   t.src=v;s=b.getElementsByTagName(e)[0];                          │
+  │   s.parentNode.insertBefore(t,s)}(window, document,'script',       │
+  │   'https://connect.facebook.net/en_US/fbevents.js');               │
+  │   fbq('init', '{{PIXEL_ID}}');                                     │
+  │   fbq('track', 'PageView');                                        │
+  │ </script>                                                           │
+  │ <noscript>                                                          │
+  │   <img height="1" width="1" style="display:none"                   │
+  │     src="https://www.facebook.com/tr?id={{PIXEL_ID}}&ev=PageView   │
+  │     &noscript=1"/>                                                  │
+  │ </noscript>                                                         │
+  └────────────────────────────────────────────────────────────────────┘
+
+  ─────────────────────────────────────────────────────
+  TAG 2: Meta Pixel — Visitante_Instagram
+  Tipo: HTML Personalizado
+  Prioridade: 0
+  Acionador: Custom - Visitante_Instagram
+  ─────────────────────────────────────────────────────
+
+  HTML:
+  ┌────────────────────────────────────────────────────────────────────┐
+  │ <script>                                                            │
+  │   fbq('trackCustom', 'Visitante_Instagram', {                      │
+  │     utm_source:   '{{dlv - utm_source}}',                          │
+  │     utm_medium:   '{{dlv - utm_medium}}',                          │
+  │     utm_campaign: '{{dlv - utm_campaign}}',                        │
+  │     utm_content:  '{{dlv - utm_content}}',                         │
+  │     fbclid:       '{{dlv - fbclid}}',                              │
+  │     event_id:     '{{dlv - event_id}}'                             │
+  │   });                                                               │
+  │ </script>                                                           │
+  └────────────────────────────────────────────────────────────────────┘
+
+  ─────────────────────────────────────────────────────
+  TAG 3: Meta Pixel — Lead
+  Tipo: HTML Personalizado
+  Prioridade: 0
+  Acionador: Custom - Lead
+  ─────────────────────────────────────────────────────
+
+  HTML:
+  ┌────────────────────────────────────────────────────────────────────┐
+  │ <script>                                                            │
+  │   fbq('track', 'Lead', {                                           │
+  │     lead_source: '{{dlv - lead_source}}',                          │
+  │     event_id:    '{{dlv - event_id}}'                              │
+  │   });                                                               │
+  │ </script>                                                           │
+  └────────────────────────────────────────────────────────────────────┘
+
+  ─────────────────────────────────────────────────────
+  TAG 4: Meta Pixel — ScrollDepth_50
+  Tipo: HTML Personalizado
+  Prioridade: 0
+  Acionador: Scroll - 50%
+  ─────────────────────────────────────────────────────
+
+  HTML:
+  ┌────────────────────────────────────────────────────────────────────┐
+  │ <script>                                                            │
+  │   fbq('trackCustom', 'ScrollDepth_50', {                           │
+  │     session_id: '{{dlv - session_id}}'                             │
+  │   });                                                               │
+  │ </script>                                                           │
+  └────────────────────────────────────────────────────────────────────┘
+
+  ─────────────────────────────────────────────────────
+  TAG 5: Meta Pixel — ScrollDepth_90
+  Tipo: HTML Personalizado
+  Prioridade: 0
+  Acionador: Scroll - 90%
+  ─────────────────────────────────────────────────────
+
+  HTML: (mesmo da TAG 4, troque '50' por '90')
+
+### 2.5 — Publicar o container GTM
+
+  Clique em "Enviar" (botão azul) → "Publicar" → dê um nome à versão.
+  IMPORTANTE: sem publicar, as tags NÃO são ativadas.
+
+────────────────────────────────────────────────────────────────────────────────
+## ETAPA 3 — Testar o fluxo completo
+────────────────────────────────────────────────────────────────────────────────
+
+### 3.1 — Teste via GTM Preview (antes de publicar)
+
+  1. No GTM, clique em "Visualizar"
+  2. Cole a URL de teste:
+     http://localhost:3000/?utm_source=instagram&utm_medium=paid_social
+     &utm_campaign=teste&fbclid=TesteFbclid123
+
+  3. Na timeline do GTM Debug, confirme:
+     ✓ "Página carregada" → Tag "Meta Pixel - Base" disparou
+     ✓ Evento "Visitante_Instagram" → Tag "Meta Pixel - Visitante_Instagram" disparou
+
+  4. Role a página até 50% → confirme "ScrollDepth_50" na timeline
+  5. Clique no botão "Meus projetos" → confirme "CTA_Clicado" na timeline
+  6. Acesse /contato e submeta o formulário → confirme "Lead" na timeline
+
+### 3.2 — Verificar cookies criados (DevTools → Application → Cookies)
+
+  Após acessar a URL com ?utm_source=instagram&fbclid=..., confirme:
+
+  Cookie          Valor esperado
+  ─────────────── ────────────────────────────────────────────────────────
+  demarchi_attr   JSON com utm_source, utm_medium, fbclid, session_id...
+  demarchi_sid    UUID v4 (ex: a1b2c3d4-e5f6-4789-abcd-ef1234567890)
+  _fbc            fb.1.1714999999999.TesteFbclid123
+  lgpd_consent    accepted  (após clicar "Aceitar todos" no banner)
+
+  ATENÇÃO: O cookie _fbp é criado pelo próprio pixel Meta JS automaticamente
+  após o carregamento da tag base. Não precisa criar manualmente.
+
+### 3.3 — Validar CAPI no Meta Events Manager
+
+  1. Acesse: Events Manager → seu Pixel → aba "Testar Eventos"
+  2. Copie o URL de teste e acesse com os parâmetros UTM
+  3. Os eventos aparecem em tempo real (aguardar ~30 segundos)
+  4. Verifique na aba "Deduplicação":
+     - Eventos com "Cliente + Servidor" = deduplicação OK ✓
+     - Eventos só "Cliente" = CAPI não chegou (verifique as env vars)
+     - Eventos só "Servidor" = GTM não carregou (verifique GTM_ID)
+
+### 3.4 — Verificar Event Match Quality (EMQ)
+
+  Events Manager → seu Pixel → aba "Atividade"
+  Cada evento tem uma barra de qualidade (0-10).
+
+  EMQ esperado com esta implementação:
+    - Visitante_Instagram: 6-8 (IP + UA + _fbc)
+    - Lead (com email do formulário): 7-9 (IP + UA + _fbc + email hash)
+
+  Para EMQ máximo (9-10): adicione autenticação e passe o email do usuário
+  logado no user_data do sendToCAPI().
+
+### 3.5 — Instalar Meta Pixel Helper (Chrome Extension)
+
+  Instale: Meta Pixel Helper (extensão oficial do Chrome)
+
+  Com o extension ativo, acesse o site. O ícone mostra:
+  ✓ Verde: Pixel carregado e eventos disparando
+  ✗ Vermelho: Pixel não encontrado (verifique PIXEL_ID no GTM)
+  ⚠ Amarelo: Eventos duplicados (verifique event_id na deduplicação)
+
+────────────────────────────────────────────────────────────────────────────────
+## ETAPA 4 — Criar Públicos de Remarketing no Meta Ads
+────────────────────────────────────────────────────────────────────────────────
+
+  URL: Gerenciador de Anúncios → Públicos → Criar Público
+       → Público Personalizado → Site
+
+### Público 1: Remarketing principal (visitantes sem conversão)
+
+  Nome: "Remarketing | Visitou Portfolio sem Lead | 7d"
+
+  INCLUIR:
+    Evento: Visitante_Instagram
+    Janela: 7 dias
+
+  EXCLUIR:
+    Evento: Lead
+    Janela: 30 dias  ← exclui por mais tempo para não irritar convertidos
+
+  → Este público recebe os anúncios de remarketing da semana seguinte.
+
+### Público 2: Visitantes engajados (mais qualificados)
+
+  Nome: "Remarketing | Scroll 50% sem Lead | 7d"
+
+  INCLUIR:
+    Evento: ScrollDepth_50
+    Janela: 7 dias
+
+  EXCLUIR:
+    Evento: Lead
+    Janela: 30 dias
+
+  → Estes leram o suficiente para considerar contratar. Mostrar prova social.
+
+### Público 3: Seed para Lookalike
+
+  Nome: "Seed | Leads Portfolio | 60d"
+
+  INCLUIR:
+    Evento: Lead
+    Janela: 60 dias
+
+  → Use como "fonte" de um Lookalike 1% para escalar prospecção.
+
+  IMPORTANTE: O público precisa de no mínimo 100 pessoas para ser usável.
+  Crie os públicos ANTES de rodar a campanha de tráfego — a janela de
+  lookback começa a contar da data de criação.
+
+────────────────────────────────────────────────────────────────────────────────
+## ETAPA 5 — URL correta para o anúncio do Instagram
+────────────────────────────────────────────────────────────────────────────────
+
+  No campo "URL do site" do anúncio no Meta Ads, use:
+
+  https://portfoliodemarchi.com.br/?utm_source=instagram&utm_medium=paid_social&utm_campaign=NOME_CAMPANHA&utm_content=NOME_CRIATIVO
+
+  Substitua:
+    NOME_CAMPANHA → ex: consultoria_ti_abr26  (sem acentos, sem espaços)
+    NOME_CRIATIVO → ex: story_v1_pme          (identifica variação do criativo)
+
+  O Meta Ads adiciona automaticamente o ?fbclid=... quando o usuário clica.
+  Você NÃO precisa adicionar fbclid manualmente.
+
+  URL final que o usuário vê:
+  https://portfoliodemarchi.com.br/?utm_source=instagram&utm_medium=paid_social
+  &utm_campaign=consultoria_ti_abr26&utm_content=story_v1&fbclid=IwAR3abc...
+
+
+================================================================================
+# 4. GUIA DE ADAPTAÇÃO PARA OUTROS PROJETOS NEXT.JS
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+## Quais arquivos copiar (sem alteração)
+────────────────────────────────────────────────────────────────────────────────
+
+  Os seguintes arquivos são 100% reutilizáveis entre projetos Next.js:
+
+  src/types/tracking.ts                       ← contratos TypeScript
+  src/lib/dataLayer.ts                        ← pushEvent, sendToCAPI, updateConsent
+  src/hooks/useInstagramTracker.ts            ← lógica principal de detecção IG
+  src/hooks/useScrollTracker.ts               ← scroll 50/90 com reset por rota
+  src/hooks/useTimeOnPage.ts                  ← timers com reset por rota
+  src/components/tracking/InstagramTracker.tsx ← Suspense wrapper
+  src/app/api/track/route.ts                  ← Meta CAPI handler
+
+────────────────────────────────────────────────────────────────────────────────
+## Quais arquivos adaptar obrigatoriamente
+────────────────────────────────────────────────────────────────────────────────
+
+  ARQUIVO                               O QUE ALTERAR
+  ─────────────────────────────────     ──────────────────────────────────────
+  .env.example / .env.local             Seus valores reais de GTM, Pixel, CAPI
+
+  src/lib/attribution.ts                Prefixo dos cookies:
+                                        'demarchi_attr' → 'seuprojeto_attr'
+                                        'demarchi_sid'  → 'seuprojeto_sid'
+
+  src/components/tracking/              Texto do banner LGPD
+  ConsentBanner.tsx                     Link para sua página /privacidade
+                                        Cores dos botões (Tailwind)
+
+  src/app/layout.tsx                    Importar GoogleTagManager, InstagramTracker
+                                        e ConsentBanner, adicionar Script consent-init
+                                        Atualizar metadata (title, description)
+
+  src/hooks/useMetaEvents.ts            Opcional: adicionar novos métodos tipados
+                                        para CTAs específicos do projeto
+
+────────────────────────────────────────────────────────────────────────────────
+## Onde instrumentar os CTAs (checklist por tipo de componente)
+────────────────────────────────────────────────────────────────────────────────
+
+  Para cada CTA que gera Lead (WhatsApp, email, formulário):
+
+    import { useMetaEvents } from '@/hooks/useMetaEvents'
+    const { trackLead } = useMetaEvents()
+    // No onClick ou onSuccess:
+    trackLead('nome_descritivo_do_cta')
+
+  Para botões de navegação (não são conversão):
+
+    const { trackCTAClick } = useMetaEvents()
+    onClick={() => trackCTAClick('hero_portfolio', '/portfolio')
+
+  Para downloads (CV, PDF):
+
+    const { trackCVDownload } = useMetaEvents()
+    onClick={() => trackCVDownload()}
+
+  Para links externos (LinkedIn, GitHub, WhatsApp):
+
+    const { trackOutboundLink } = useMetaEvents()
+    onClick={() => trackOutboundLink('linkedin', 'https://linkedin.com/...')
+
+────────────────────────────────────────────────────────────────────────────────
+## Checklist rápido de adaptação (copie e marque)
+────────────────────────────────────────────────────────────────────────────────
+
+  PRÉ-REQUISITOS
+  [ ] Pixel criado no Meta Business Suite
+  [ ] Token CAPI gerado no System User
+  [ ] Container GTM criado
+
+  AMBIENTE
+  [ ] .env.local criado com os 4 valores reais
+  [ ] npm install executado
+  [ ] npm run build sem erros
+
+  CÓDIGO — COPIAS (sem modificação)
+  [ ] src/types/tracking.ts
+  [ ] src/lib/dataLayer.ts
+  [ ] src/lib/attribution.ts  (só mudar prefixo dos cookies)
+  [ ] src/hooks/useInstagramTracker.ts
+  [ ] src/hooks/useScrollTracker.ts
+  [ ] src/hooks/useTimeOnPage.ts
+  [ ] src/hooks/useMetaEvents.ts
+  [ ] src/components/tracking/InstagramTracker.tsx
+  [ ] src/components/tracking/ConsentBanner.tsx  (ajustar texto/cores)
+  [ ] src/app/api/track/route.ts
+
+  CÓDIGO — MODIFICAÇÕES NO PROJETO DESTINO
+  [ ] layout.tsx: Script consent-init + GoogleTagManager + InstagramTracker + ConsentBanner
+  [ ] Componente Hero/CTA principal: trackCTAClick ou trackLead
+  [ ] Navbar: trackCTAClick no botão principal
+  [ ] Formulário de contato: trackLead + trackContact no onSuccess
+
+  GTM
+  [ ] Variável constante PIXEL_ID criada
+  [ ] 9 Variáveis da Camada de Dados criadas
+  [ ] 7 Acionadores criados (5 custom events + 2 scroll)
+  [ ] 5 Tags criadas (Base + Visitante_Instagram + Lead + Scroll50 + Scroll90)
+  [ ] Tag Base com prioridade 10
+  [ ] Container publicado (não só salvo)
+
+  META ADS
+  [ ] Público "Visitou sem Lead — 7d" criado
+  [ ] Público "Scroll 50% sem Lead — 7d" criado
+  [ ] Público "Seed Leads — 60d" criado (para Lookalike)
+
+  VALIDAÇÃO
+  [ ] GTM Preview: Visitante_Instagram disparou na URL com ?utm_source=instagram
+  [ ] GTM Preview: ScrollDepth_50 disparou ao rolar 50%
+  [ ] GTM Preview: Lead disparou ao submeter formulário
+  [ ] DevTools: cookie demarchi_attr presente após visita com UTM
+  [ ] DevTools: cookie _fbc presente no formato fb.1.{ts}.{fbclid}
+  [ ] Meta Events Manager: eventos chegando (aguardar 1-2 min)
+  [ ] Meta Events Manager: deduplicação mostrando "Cliente + Servidor"
+  [ ] Pixel Helper: ícone verde no browser
+  [ ] npm run build: zero erros TypeScript
+
+
+================================================================================
+# DICAS FINAIS DE DIAGNÓSTICO
+================================================================================
+
+PROBLEMA: Visitante_Instagram não dispara
+  → Verifique se a URL tem utm_source=instagram (ou fbclid)
+  → Abra DevTools → Application → sessionStorage → procure "ig_tracked"
+     Se "1", o evento já foi disparado nessa aba. Abra aba anônima para testar.
+
+PROBLEMA: Evento aparece no GTM mas não no Meta Events Manager
+  → Confirme PIXEL_ID na constante GTM (sem espaços, só números)
+  → Verifique se a Tag Base tem prioridade 10 (não zero)
+  → Teste em aba anônima — extensões podem bloquear o pixel
+
+PROBLEMA: CAPI retorna erro no console do servidor
+  → Abra os logs: no terminal, veja [CAPI] Error: {...}
+  → Erro mais comum: token inválido (copie novamente do Meta, pode expirar)
+  → Erro "Invalid parameter": verifique formato do event_id (deve ser UUID)
+  → Para debugar: adicione META_CAPI_TEST_EVENT_CODE=TEST12345 no .env.local
+
+PROBLEMA: Cookie _fbc não foi criado
+  → Só é criado se fbclid estiver na URL — simule com ?fbclid=teste123
+  → Verifique se SameSite=Lax está configurado (funciona com redirects)
+  → Em localhost sem HTTPS, alguns browsers bloqueiam cookies — teste em staging
+
+PROBLEMA: Público de remarketing não popula
+  → Aguarde 24-48h após os primeiros eventos chegarem
+  → Mínimo de 100 pessoas únicas para o público ficar ativo
+  → Confirme que os eventos estão chegando no Events Manager primeiro
+
+
+================================================================================
+# FIM DO INICIA.TXT
+# Projeto: portfoliodemarchi.com.br
+# Implementação: Remarketing Avançado Instagram → GTM → Meta Pixel + CAPI
+# Data: 2026-04-28
+================================================================================

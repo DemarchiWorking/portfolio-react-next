@@ -1,44 +1,48 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Send, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Send, Loader2, CheckCircle2, AlertCircle } from 'lucide-react'
+import { useMetaEvents } from '@/hooks/useMetaEvents'
 
 interface ContactFormProps {
-  accessKey: string;
+  accessKey: string
 }
 
 export function ContactForm({ accessKey }: ContactFormProps) {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const { trackLead, trackContact } = useMetaEvents()
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setStatus("loading");
+    event.preventDefault()
+    setStatus('loading')
 
-    const formData = new FormData(event.currentTarget);
-    
-    // Configurações cruciais para o Web3Forms funcionar
-    formData.append("access_key", accessKey);
-    formData.append("subject", "Novo Contato do Portfólio - LabDataDev");
-    formData.append("from_name", "Meu Portfólio");
+    const formData = new FormData(event.currentTarget)
+
+    formData.append('access_key', accessKey)
+    formData.append('subject', 'Novo Contato do Portfólio — Antonio Demarchi')
+    formData.append('from_name', 'Portfolio Demarchi')
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
         body: formData,
-      });
+      })
 
-      const data = await response.json();
+      const data = (await response.json()) as { success: boolean; message?: string }
 
       if (data.success) {
-        setStatus("success");
+        // Dispara Lead + Contact via Pixel + CAPI ao confirmar envio real
+        trackLead('contact_form')
+        trackContact('contact_form')
+        setStatus('success')
       } else {
-        console.error("Web3Forms Error:", data.message);
-        setStatus("error");
+        console.error('Web3Forms Error:', data.message)
+        setStatus('error')
       }
     } catch (error) {
-      console.error("Network Error:", error);
-      setStatus("error");
+      console.error('Network Error:', error)
+      setStatus('error')
     }
   }
 

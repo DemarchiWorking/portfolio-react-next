@@ -1,28 +1,28 @@
-"use client"; 
+'use client'
 
-import Link  from 'next/link';
-//import { Link as LinkIcon } from 'lucide-react';
-import styles from './navbar.module.css';
-import Image from 'next/image';
-import { Navitem, NavitemProps } from '@/components/molecules/NavItem';
-import { usePathname } from 'next/navigation';
-import { FaBars } from 'react-icons/fa';
-import { useState } from 'react';
-import { FaXmark } from 'react-icons/fa6';
-
+import Link from 'next/link'
+import styles from './navbar.module.css'
+import Image from 'next/image'
+import { Navitem, NavitemProps } from '@/components/molecules/NavItem'
+import { usePathname } from 'next/navigation'
+import { FaBars } from 'react-icons/fa'
+import { useState } from 'react'
+import { FaXmark } from 'react-icons/fa6'
+import { useMetaEvents } from '@/hooks/useMetaEvents'
 
 export const Navbar = () => {
+    const { trackCTAClick } = useMetaEvents()
 
     const items: NavitemProps[] = [
-        { label: 'Inicio', url: '/home' },
-        { label: 'Sobre', url: '/about' },
-        { label: 'Serviços', url: '/services' },
+        { label: 'Inicio',    url: '/home'      },
+        { label: 'Sobre',     url: '/about'     },
+        { label: 'Serviços',  url: '/services'  },
         { label: 'Portfólio', url: '/portfolio' },
-        { label: 'Contato', url: '/contato' },
-    ];
+        { label: 'Contato',   url: '/contato'   },
+    ]
 
-    const pathname = usePathname();
-    const [openMenu, setOpenMenu] =  useState<boolean>(false);
+    const pathname = usePathname()
+    const [openMenu, setOpenMenu] = useState<boolean>(false)
 
 
 
@@ -53,7 +53,10 @@ export const Navbar = () => {
             </button>
 
                 
-            <a href="/chamado">
+            <a
+                href="/chamado"
+                onClick={() => trackCTAClick('navbar_contatar', '/chamado')}
+            >
                 <button className={styles['btn-default']}>
                     Contatar
                 </button>
