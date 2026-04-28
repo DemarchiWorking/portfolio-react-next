@@ -99,7 +99,7 @@ export function ContactForm({ accessKey }: ContactFormProps) {
                 name="whatsapp"
                 required
                 type="tel"
-                placeholder="Contato Whatsapp"
+                placeholder="(24) 99999-9999 Telefone Contato"
                 className="w-full bg-card/40 border border-border rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-pink-500/40 focus:border-pink-500 transition-all backdrop-blur-sm"
               />
             </div>

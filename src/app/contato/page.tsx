@@ -213,6 +213,15 @@ export default function Contato() {
                 <h2 className="text-3xl font-bold tracking-tighter">Formulário de Contato</h2>
                 <p className="text-muted-foreground italic">Isso enviará um e-mail diretamente para Antonio Demarchi.</p>
               </header>
+              
+                <a 
+                  href="https://www.linkedin.com/in/demarchi1" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-blue-600 font-bold hover:underline transition-all"
+                >
+                  LinkedIn
+                </a>
 
               <ContactForm accessKey="ce53cd00-65c0-484a-afe0-9812d156df7e" />
             </motion.div>
