@@ -1,0 +1,217 @@
+🧠 1. O QUE VOCÊ QUER (TRADUZIDO PARA REALIDADE)
+
+Você quer garantir:
+
+✔ 1. Que tracking funciona
+✔ 2. Que dados estão chegando no Meta
+✔ 3. Que consegue fazer remarketing amanhã
+✔ 4. Que não está “achando que funciona”
+✔ 5. Que tudo está pronto para escalar campanhas
+🚨 2. O SEU ESTADO ATUAL (REALISTA PELO LOG)
+
+Você já tem:
+
+✅ FUNCIONANDO
+Next.js rodando
+eventos frontend disparando
+UTMs sendo capturados
+cookies sendo criados
+API /api/track funcionando
+❌ QUEBRADO (CRÍTICO)
+Malformed access token (CAPI)
+
+👉 isso significa:
+
+Meta NÃO está recebendo eventos server-side
+CAPI não funciona ainda
+deduplicação não existe
+🎯 3. O QUE VOCÊ PRECISA TER PARA REMARKETING “DE VERDADE”
+🟢 NÍVEL MÍNIMO (já permite remarketing amanhã)
+
+✔ Pixel browser funcionando
+✔ PageView chegando no Meta
+✔ Eventos custom (CTA / scroll / lead)
+✔ Cookies de atribuição
+
+👉 ISSO JÁ PERMITE CAMPANHA
+
+🔵 NÍVEL PROFISSIONAL (o seu objetivo)
+
+✔ CAPI funcionando (server-side)
+✔ event_id unificado
+✔ deduplicação Pixel + Server
+✔ EMQ (Event Match Quality) alto
+✔ públicos mais baratos e fortes
+
+🔧 4. O QUE VOCÊ PRECISA ALTERAR (CHECKLIST COMPLETO)
+🔴 4.1 TOKEN CAPI (OBRIGATÓRIO)
+TROCAR:
+META_CAPI_ACCESS_TOKEN=EAAxxxxx
+COMO GERAR CERTO:
+
+Meta Business:
+
+Configurações do negócio
+Usuários do sistema
+Criar / selecionar user admin
+“Gerar token”
+selecionar PIXEL correto
+permissões:
+ads_management
+business_management
+
+✔ COPIAR NOVO TOKEN
+
+🔴 4.2 VERIFICAR PIXEL ID
+NEXT_PUBLIC_META_PIXEL_ID=1531998838354961
+
+✔ já está certo (não mexer)
+
+🔴 4.3 GTM (SE ESTIVER USANDO)
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
+
+✔ precisa estar publicado no GTM
+
+🔴 4.4 URL DO SITE (IMPORTANTE PARA CAPI)
+NEXT_PUBLIC_SITE_URL=https://seusite.vercel.app
+
+✔ necessário para atribuição correta
+
+🧪 5. COMO VALIDAR SE ESTÁ FUNCIONANDO (PASSO A PASSO REAL)
+🟢 TESTE 1 — FRONTEND (LOCAL OU VERCEL)
+
+Abra:
+
+/?utm_source=instagram&fbclid=test123
+VERIFICAR:
+✔ Chrome DevTools:
+
+Application → Cookies
+
+demarchi_attr ✔
+_fbc ✔
+_fbp ✔
+✔ Meta Pixel Helper:
+PageView ✔
+Visitante_Instagram ✔
+🟢 TESTE 2 — CONFIRMAR ENVIO DE DADOS
+abra console:
+
+Se estiver OK você verá algo como:
+
+[CAPI] event sent successfully
+status: 200
+❌ se aparecer:
+Malformed access token
+
+👉 ainda não funciona server-side
+
+🟢 TESTE 3 — META EVENTS MANAGER
+
+Vá em:
+
+👉 Events Manager → Test Events
+
+você deve ver:
+
+✔ eventos chegando em tempo real:
+
+PageView
+Lead
+ScrollDepth
+CTA_Clicado
+🧪 6. TESTE MAIS IMPORTANTE (O “PROOF” FINAL)
+SIMULAÇÃO REAL DE USUÁRIO
+
+Abra:
+
+http://localhost:3001/?utm_source=instagram&utm_campaign=test&fbclid=123
+
+Depois:
+
+✔ rolar página
+✔ clicar botão
+✔ enviar formulário
+
+RESULTADO ESPERADO:
+✔ Pixel:
+eventos aparecem
+✔ cookies:
+persistem
+✔ API:
+request POST /api/track
+🚀 7. COMO SABER SE JÁ PODE RODAR CAMPANHA AMANHÃ
+✔ SE ISSO FOR VERDADE:
+PageView aparece no Pixel Helper
+eventos scroll funcionam
+CTA dispara evento
+cookies existem
+
+👉 VOCÊ JÁ PODE FAZER REMARKETING BÁSICO
+
+❌ NÃO PRECISA DE CAPI para isso
+
+CAPI é:
+
+👉 otimização (não obrigatória para começar)
+
+🔥 8. ESTRATÉGIA DE REMARKETING QUE VOCÊ JÁ PODE USAR
+🎯 HOJE MESMO:
+Público 1:
+Visitou site (7 dias)
+Público 2:
+Engajou (scroll 50%)
+Público 3:
+Clique em CTA
+💰 ISSO JÁ VENDE
+
+mesmo sem CAPI
+
+⚠️ 9. O ERRO MAIS COMUM (EVITE ISSO)
+
+Não confundir:
+
+coisa	precisa para rodar ads
+Pixel browser	✔ SIM
+CAPI	❌ NÃO obrigatório
+GTM perfeito	❌ NÃO obrigatório
+🧠 10. RESUMO FINAL (HONESTO)
+✔ VOCÊ JÁ TEM:
+tracking funcionando
+cookies funcionando
+eventos frontend funcionando
+base de remarketing pronta
+❌ O QUE FALTA:
+corrigir token CAPI
+melhorar deduplicação
+validar no Meta Events Manager
+🚀 11. RESPOSTA DIRETA DA SUA PERGUNTA
+👉 “já consigo fazer remarketing amanhã?”
+✔ SIM
+
+desde que:
+
+Pixel estiver disparando
+eventos aparecerem no Meta
+públicos forem criados
+👉 “CAPI é obrigatório?”
+❌ NÃO
+
+é otimização avançada
+
+👉 “como sei que está funcionando de verdade?”
+
+✔ Pixel Helper
+✔ Events Manager
+✔ cookies no browser
+✔ console logs
+
+🚀 SE QUISER PRÓXIMO PASSO
+
+Posso te montar:
+
+🔥 “estratégia exata de campanha de Instagram para 24h (com públicos, copy e estrutura de anúncio)”
+
+ou
+
+🔥 “como corrigir CAPI e subir para nível agência (EMQ 9/10+)”
