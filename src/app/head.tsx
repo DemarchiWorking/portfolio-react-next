@@ -2,7 +2,7 @@
 export default function Head() {
   return (
     <>
-      {/* Meta Pixel Base Code */}
+      {/* 
       <script
         dangerouslySetInnerHTML={{
           __html: `
@@ -28,7 +28,8 @@ export default function Head() {
           style={{ display: "none" }}
           src="https://www.facebook.com/tr?id=1531998838354961&ev=PageView&noscript=1"
         />
-      </noscript>
+      </noscript>Meta Pixel Base Code */
+      }
     </>
   )
 }
