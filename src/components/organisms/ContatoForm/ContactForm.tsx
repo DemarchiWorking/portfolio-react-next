@@ -32,7 +32,6 @@ export function ContactForm({ accessKey }: ContactFormProps) {
       const data = (await response.json()) as { success: boolean; message?: string }
 
       if (data.success) {
-        // Dispara Lead + Contact via Pixel + CAPI ao confirmar envio real
         trackLead('contact_form')
         trackContact('contact_form')
         setStatus('success')
@@ -58,7 +57,6 @@ export function ContactForm({ accessKey }: ContactFormProps) {
             onSubmit={handleSubmit}
             className="grid grid-cols-1 gap-6 p-1"
           >
-            {/* Proteção Anti-Spam (Honeypot) */}
             <input type="checkbox" name="botcheck" className="hidden" style={{ display: "none" }} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -91,6 +89,21 @@ export function ContactForm({ accessKey }: ContactFormProps) {
               </div>
             </div>
 
+            {/* NOVO CAMPO: WhatsApp */}
+            <div className="flex flex-col gap-2">
+              <label htmlFor="whatsapp" className="text-sm font-semibold text-foreground/80 ml-1">
+                WhatsApp
+              </label>
+              <input
+                id="whatsapp"
+                name="whatsapp"
+                required
+                type="tel"
+                placeholder="Contato Whatsapp"
+                className="w-full bg-card/40 border border-border rounded-2xl px-5 py-4 outline-none focus:ring-2 focus:ring-pink-500/40 focus:border-pink-500 transition-all backdrop-blur-sm"
+              />
+            </div>
+
             <div className="flex flex-col gap-2">
               <label htmlFor="message" className="text-sm font-semibold text-foreground/80 ml-1">
                 Sua Mensagem
@@ -105,21 +118,26 @@ export function ContactForm({ accessKey }: ContactFormProps) {
               />
             </div>
 
+            {/* BOTÃO COM ANIMAÇÃO MODERNA (FILL DA DIREITA PARA ESQUERDA + ZOOM) */}
             <motion.button
-              whileHover={{ scale: 1.01 }}
-              whileTap={{ scale: 0.98 }}
               disabled={status === "loading"}
               type="submit"
-              className="w-full py-5 cursor-pointer rounded-2xl bg-gradient-to-r from-[#1C398E] via-[#264cb5] to-[#1C398E] dark:bg-none dark:bg-gray-900 text-gray-200 font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:opacity-90 disabled:opacity-50 transition-all shadow-lg shadow-pink-500/10 cursor-pointer"
+              className="group relative w-full py-5 overflow-hidden rounded-2xl border-2 border-[#1C398E] bg-transparent text-[#1C398E] dark:text-gray-200 font-black uppercase tracking-widest flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.03] disabled:opacity-50 shadow-lg shadow-pink-500/10 cursor-pointer"
             >
-              {status === "loading" ? (
-                <Loader2 className="animate-spin" size={24} />
-              ) : (
-                <>
-                  Enviar Solicitação
-                  <Send size={20} />
-                </>
-              )}
+              {/* Overlay de cor animado */}
+              <span className="absolute inset-0 translate-x-full bg-[#1C398E] transition-transform duration-500 ease-out group-hover:translate-x-0"></span>
+
+              {/* Conteúdo do botão com Z-Index para ficar acima do overlay */}
+              <span className="relative z-10 flex items-center gap-3 group-hover:text-white transition-colors duration-300">
+                {status === "loading" ? (
+                  <Loader2 className="animate-spin" size={24} />
+                ) : (
+                  <>
+                    Enviar Solicitação
+                    <Send size={20} className="transition-transform group-hover:translate-x-1" />
+                  </>
+                )}
+              </span>
             </motion.button>
 
             {status === "error" && (
@@ -129,7 +147,7 @@ export function ContactForm({ accessKey }: ContactFormProps) {
                 className="flex items-center justify-center gap-2 text-red-500 font-medium bg-red-500/10 py-3 rounded-xl border border-red-500/20"
               >
                 <AlertCircle size={18} />
-                <span>Erro ao enviar. Verifique sua Access Key.</span>
+                <span>Erro ao enviar. Verifique sua conexão ou Access Key.</span>
               </motion.div>
             )}
           </motion.form>

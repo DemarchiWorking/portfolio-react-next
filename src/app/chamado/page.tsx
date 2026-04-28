@@ -1,12 +1,10 @@
 "use client";
 
 import { motion, Variants, AnimatePresence } from "framer-motion";
-
 import { ThemeToggle } from "@/components/molecules/theme-toggle";
-import { ContactForm } from "@/components/organisms/ContatoForm/ContactForm"
+import { ContactForm } from "@/components/organisms/ContatoForm/ContactForm";
 
 export default function Chamado() {
-
   const itemVariants: Variants = {
     hidden: { opacity: 0, y: 15 },
     visible: { 
@@ -22,35 +20,41 @@ export default function Chamado() {
         
         <ThemeToggle />
         <AnimatePresence mode="wait">
+          <motion.div
+            key="form-section"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.5, ease: "circOut" }}
+            className="w-full flex flex-col gap-8"
+          >
+            <header className="relative space-y-2">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h2 className="text-3xl font-bold tracking-tighter">Formulário de Contato</h2>
+                  <p className="text-muted-foreground italic">
+                    Isso enviará um e-mail diretamente para Antonio Demarchi.
+                  </p>
+                </div>
+                
+                {/* Link do LinkedIn posicionado à direita */}
+                <a 
+                  href="https://www.linkedin.com/in/demarchi1" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="text-blue-600 font-bold hover:underline transition-all"
+                >
+                  LinkedIn
+                </a>
+              </div>
+            </header>
 
-           <motion.div
-              key="form-section"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.5, ease: "circOut" }}
-              className="w-full flex flex-col gap-8"
-            >
-              <header className="space-y-2">
-                <div className="pt-2 pb-2"></div>
-                <h2 className="text-3xl font-bold tracking-tighter">Formulário de Contato</h2>
-                <p className="text-muted-foreground italic">Isso enviará um e-mail diretamente para Antonio Demarchi.</p>
-                  <div className="flex justify-end w-full">
-                    <a href="https://www.linkedin.com/in/demarchi1" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="text-blue-600 font-bold hover:underline">
-                      LinkedIn
-                    </a>
-                  </div>
-              </header>
+            {/* Inserindo a chave do Web3Forms que você já usa */}
+            <ContactForm accessKey="ce53cd00-65c0-484a-afe0-9812d156df7e" />
+            
+          </motion.div>
+        </AnimatePresence>
 
-              <ContactForm accessKey="ce53cd00-65c0-484a-afe0-9812d156df7e" />
-            </motion.div>
-
-            </AnimatePresence>
-
-        {/* Footer de Informações Adicionais (Sempre visível abaixo do conteúdo ativo) */}
         <motion.footer 
           variants={itemVariants}
           initial="hidden"
