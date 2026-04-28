@@ -2,12 +2,13 @@ import type { Metadata } from 'next'
 import Script from 'next/script'
 import { Inter, Poppins } from 'next/font/google'
 import { GoogleTagManager } from '@next/third-parties/google'
-import './globals.css'
+//import './globals.css'
 import { ThemeFeature } from '@/features/theme/theme-provider'
 import { Navbar } from '@/components/organisms/Navbar'
 import { Footer } from '@/components/organisms/Footer'
 import { InstagramTracker } from '@/components/tracking/InstagramTracker'
 import { ConsentBanner } from '@/components/tracking/ConsentBanner'
+import { MetaPixel } from '@/components/tracking/metaPixel'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -62,7 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Banner LGPD — aparece só se o usuário ainda não escolheu */}
         <ConsentBanner />
-
+        <MetaPixel />
         <Navbar />
         <ThemeFeature>{children}</ThemeFeature>
         <Footer />

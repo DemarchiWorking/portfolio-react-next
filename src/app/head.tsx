@@ -1,31 +1,34 @@
+// app/head.tsx
 export default function Head() {
   return (
     <>
+      {/* Meta Pixel Base Code */}
       <script
         dangerouslySetInnerHTML={{
           __html: `
-            (function () {
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
 
-              var _consent = null;
-              try {
-                _consent = window.localStorage.getItem('lgpd_consent');
-              } catch(e){}
-
-              var _state = _consent === 'accepted' ? 'granted' : 'denied';
-
-              gtag('consent', 'default', {
-                ad_storage: _state,
-                analytics_storage: _state,
-                ad_user_data: _state,
-                ad_personalization: _state,
-                wait_for_update: _consent === null ? 2000 : 0
-              });
-            })();
+            fbq('init', '1531998838354961');
+            fbq('track', 'PageView');
           `,
         }}
       />
+
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style={{ display: "none" }}
+          src="https://www.facebook.com/tr?id=1531998838354961&ev=PageView&noscript=1"
+        />
+      </noscript>
     </>
   )
 }
