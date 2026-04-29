@@ -10,6 +10,7 @@ import { Navbar } from '@/components/organisms/Navbar'
 import { Footer } from '@/components/organisms/Footer'
 import { InstagramTracker } from '@/components/tracking/InstagramTracker'
 import { ConsentBanner } from '@/components/tracking/ConsentBanner'
+import BotaoWhatsapp from '@/components/atoms/Botao-WhatsApp/botao-whatsapp'
 
 const inter = Inter({ subsets: ['latin'] })
 const poppins = Poppins({
@@ -43,10 +44,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
-        
-        <meta name="facebook-domain-verification" content="4hrkbsbjmpneh5onnzmt955toahkrj" />
 
-        {/* 1. Google Consent Mode v2 — OBRIGATÓRIO ANTES DO GTM */}
+        <meta name="facebook-domain-verification" content="4hrkbsbjmpneh5onnzmt955toahkrj" />
         <Script id="google-consent-mode" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
@@ -74,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ConsentBanner />
         <Navbar />
         <ThemeFeature>{children}</ThemeFeature>
+        <BotaoWhatsapp link="https://chat.whatsapp.com/GTExrAR1s3aJDcvMZwza2T?mode=gi_t" />
         <Footer />
       </body>
     </html>

@@ -214,6 +214,7 @@ export default function Contato() {
                 <p className="text-muted-foreground italic">Isso enviará um e-mail diretamente para Antonio Demarchi.</p>
               </header>
               
+          <div className="w-full flex justify-end p-4"> 
                 <a 
                   href="https://www.linkedin.com/in/demarchi1" 
                   target="_blank" 
@@ -222,6 +223,7 @@ export default function Contato() {
                 >
                   LinkedIn
                 </a>
+              </div>
 
               <ContactForm accessKey="ce53cd00-65c0-484a-afe0-9812d156df7e" />
             </motion.div>
