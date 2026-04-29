@@ -12,19 +12,18 @@ import { useMetaEvents } from '@/hooks/useMetaEvents'
 
 export const Navbar = () => {
     const { trackCTAClick } = useMetaEvents()
+    const pathname = usePathname()
+    const [openMenu, setOpenMenu] = useState<boolean>(false)
+
+    const dynamicHomeUrl = pathname === '/home' ? '/' : '/home'
 
     const items: NavitemProps[] = [
-        { label: 'Inicio',    url: '/home'      },
+        { label: 'Inicio',    url: dynamicHomeUrl },
         { label: 'Sobre',     url: '/about'     },
         { label: 'Serviços',  url: '/services'  },
         { label: 'Portfólio', url: '/portfolio' },
         { label: 'Contato',   url: '/contato'   },
     ]
-
-    const pathname = usePathname()
-    const [openMenu, setOpenMenu] = useState<boolean>(false)
-
-
 
   return (
     <header>
@@ -42,7 +41,11 @@ export const Navbar = () => {
                         key={index}
                         url={item.url}
                         label={item.label}
-                        isActive={pathname === item.url}
+                        // isActive modificado para considerar tanto '/' quanto '/home' como ativos para o botão Inicio
+                        isActive={item.label === 'Inicio' 
+                            ? (pathname === '/' || pathname === '/home') 
+                            : pathname === item.url
+                        }
                     />
                 ))}
             </ul>
