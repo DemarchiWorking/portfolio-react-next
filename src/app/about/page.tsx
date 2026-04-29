@@ -17,8 +17,8 @@ import {
 import { ThemeToggle } from "@/components/molecules/theme-toggle";
 
 export default function Sobre() {
-  const [activePanel, setActivePanel] = useState<'none' | 'brands' | 'institutions'>('none');
-
+  const [activePanel, setActivePanel] = useState<'none' | 'brands' | 'institutions'>('brands');
+  
   const experiences = [
     {
       company: "nstech (e-frete)",
