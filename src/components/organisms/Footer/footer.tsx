@@ -8,25 +8,25 @@ export const Footer = () => {
 
   const footerNavigation = {
     plataforma: [
-      { name: "", href: "#" },
-      { name: "", href: "#" },
-      { name: "", href: "#" },
+      { name: "Engenharia Disciplinada", href: "#" },
+      { name: "Interfaces Web", href: "#" },
+      { name: "Automações", href: "#" },
     ],
     produtos: [
-      { name: "", href: "#" },
-      { name: "", href: "#" },
-      { name: "", href: "#" },
+      { name: "Análise de Requisitos", href: "#" },
+      { name: "Documento de Especificação", href: "#" },
+      { name: "Desenho de Arquitetura", href: "#" },
     ],
     sobre: [
-      { name: "", href: "#" },
-      { name: "", href: "#" },
-      { name: "", href: "#" },
+      { name: "DevOps", href: "#" },
+      { name: "Arquitetura Cloud", href: "#" },
+      { name: "Infraestrutura Moderna", href: "#" },
     ],
   };
 
   return (
     <footer className="bg-[#0f172a] text-slate-300 py-12 px-6 md:px-12 font-sans">
-      <div className="bg-blue-700 dark:bg-gray-900">.</div>
+      <div className="bg-blue-700 dark:bg-gray-900"></div>
 
       <div className="max-w-7xl pt-5 mx-auto">
 
