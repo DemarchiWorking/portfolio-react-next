@@ -103,7 +103,7 @@ const App = () => {
                 transition={{ type: 'spring', stiffness: 120 }}
             >
                 <div className="max-w-7xl mx-auto flex justify-between items-center">
-                    <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{PORTFOLIO_DATA.name.split(' ')[0]}<span className="text-gray-900 dark:text-white">.dev</span></h1>
+                    <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{PORTFOLIO_DATA.name.split(' ')[0]}<span className="text-gray-900 dark:text-white">.Engenheiro</span></h1>
                     <nav className="hidden md:flex space-x-6 text-sm font-medium">
                         {['Sobre', 'Skills', 'Experiência', 'Contato'].map((item) => (
                             <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-indigo-500 transition-colors">
