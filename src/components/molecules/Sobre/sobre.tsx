@@ -124,7 +124,7 @@ export const Sobre = () => {
             title: "Clínica Médica - Saúde",
             description: "Plataforma modular na área da saúde.",
             tags: ["React", "Tailwind", "Next"],
-            image: "/clinica",
+            image: "/clinica.png",
             linkRepo: "",
             linkLive: "https://github.com/demarchi-jarvis/clinica",
             pdf: "",
