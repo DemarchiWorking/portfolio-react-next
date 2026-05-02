@@ -111,6 +111,26 @@ export const Sobre = () => {
 
     const projetosData = [
         {
+            title: "Imobiliária Rio de Janeiro",
+            description: "Plataforma moderna para venda de casas focada em posicionamento digital.",
+            tags: ["React", "Tailwind", "Next"],
+            image: "/imobiliaria-portfolio.png",
+            linkRepo: "",
+            linkLive: "https://imobiliaria-luxo-tau.vercel.app/",
+            pdf: "",
+            video: ""
+        },
+        {
+            title: "Clínica Médica - Saúde",
+            description: "Plataforma modular na área da saúde.",
+            tags: ["React", "Tailwind", "Next"],
+            image: "/clinica",
+            linkRepo: "",
+            linkLive: "https://github.com/demarchi-jarvis/clinica",
+            pdf: "",
+            video: ""
+        },
+        {
             title: "Plataforma E-commerce Arte e Cultura",
             description: "Plataforma completa de Vitrine Digital para Artesãos, utilizando tecnologias modernas (Java, Angular).",
             tags: ["Angular", "Java", "Tailwind", "Next"],
