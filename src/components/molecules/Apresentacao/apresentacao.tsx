@@ -141,7 +141,7 @@ export const Apresentacao = () => {
                                     </Botao>
                                 </a>
                                 <a
-                                    href="/CurriculoEngenheiroAntonioDemarchi.pdf"
+                                    href="/chamado"
                                     download="CurriculoEngenheiroAntonioDemarchi.pdf"
                                     onClick={() => trackCTAClick('Chamado', '/chamado')}
                                 >
