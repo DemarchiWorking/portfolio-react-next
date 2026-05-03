@@ -8,6 +8,7 @@ import Lottie from "lottie-react";
 import animacao from "../../../../public/Engrenagem.json";
 import Botao from '@/components/atoms/Botao-Primary/botao';
 import { useMetaEvents } from '@/hooks/useMetaEvents';
+import { FileDown } from 'lucide-react';
 
 const IconMap: { [key: string]: IconType } = {
     FaCode, 
@@ -186,19 +187,25 @@ export const Sobre = () => {
                                 isLast={index === timelineData.length - 1}
                             />
                         ))}
-                         <div className='pb-8'>
+                         <div className="mt-8">
                             <a
                                 href="/CurriculoEngenheiroAntonioDemarchi.pdf"
                                 download="CurriculoEngenheiroAntonioDemarchi.pdf"
                                 onClick={() => trackCVDownload()}
-                                className="block border-2 border-blue-600 rounded-lg p-2 transition-hover hover:bg-blue-50"
+                                className="group flex items-center justify-between w-full max-w-sm p-4 bg-white border border-slate-200 rounded-xl shadow-sm transition-all duration-300 hover:shadow-md hover:border-blue-400 hover:-translate-y-1"
                             >
-                                <TimelineItem
-                                    key="resumo"
-                                    title="Resumo - Baixar Currículo"
-                                    icon=""
-                                    isLast={true}
-                                />
+                                <div className="flex items-center gap-4">
+                                    <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                        <FileDown size={24} />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-semibold text-slate-900">Currículo Completo</span>
+                                        <span className="text-xs text-slate-500">PDF - Baixar Agora</span>
+                                    </div>
+                                </div>
+                                <div className="text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity pr-2">
+                                    →
+                                </div>
                             </a>
                         </div>
 
