@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { motion, Variants } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import Botao from '@/components/atoms/Botao-Primary/botao'
@@ -50,7 +50,8 @@ const itemVariants: Variants = {
  */
 export const Apresentacao = () => {
     const { trackCTAClick, trackCVDownload } = useMetaEvents()
-
+    const [textoBotao, setTextoBotao] = useState("Mensagem");
+    
     return (
         // O fundo escuro e a altura mínima ocupam a tela
         <motion.section
@@ -148,6 +149,19 @@ export const Apresentacao = () => {
                                         Mensagem Fale Comigo 
                                     </Botao>
                                 </a>
+
+                                ##
+<a
+  href="/chamado"
+  onMouseEnter={() => setTextoBotao("Fale Comigo")}
+  onMouseLeave={() => setTextoBotao("Mensagem")}
+  onClick={() => trackCTAClick('Chamado', '/chamado')}
+>
+  <Botao variant="secondary">
+    {textoBotao}
+  </Botao>
+</a>
+                                ##
                             </div>
                         </motion.div>
                     <motion.div>
