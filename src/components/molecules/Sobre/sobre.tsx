@@ -6,6 +6,8 @@ import { IconType } from 'react-icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lottie from "lottie-react";
 import animacao from "../../../../public/Engrenagem.json";
+import Botao from '@/components/atoms/Botao-Primary/botao';
+import { useMetaEvents } from '@/hooks/useMetaEvents';
 
 const IconMap: { [key: string]: IconType } = {
     FaCode, 
@@ -163,6 +165,7 @@ export const Sobre = () => {
     ];
 
     const instSelecionada = instituicoesData.find(i => i.id === ativo);
+    const { trackCTAClick, trackCVDownload } = useMetaEvents()
 
     useEffect(() => {
             fetch("/Engrenagem.json")
@@ -172,7 +175,15 @@ export const Sobre = () => {
     return (
         <section className="bg-white dark:bg-[#192328] py-16 md:py-24 transition-colors duration-300 overflow-hidden">
             <div className="container mx-auto px-6 max-w-7xl">
-                
+                <a
+                                                    href="/CurriculoEngenheiroAntonioDemarchi.pdf"
+                                                    download="CurriculoEngenheiroAntonioDemarchi.pdf"
+                                                    onClick={() => trackCVDownload()}
+                                                >
+                                                    <Botao variant="primary">
+                                                        Resumo
+                                                    </Botao>
+                </a>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
                     <div className="flex flex-col pr-0 lg:pr-10">
                         {timelineData.map((item, index) => (

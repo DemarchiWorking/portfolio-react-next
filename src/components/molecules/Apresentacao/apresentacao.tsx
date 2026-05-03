@@ -140,14 +140,13 @@ export const Apresentacao = () => {
                                         Meus projetos <ArrowRight className="ml-2 w-4" />
                                     </Botao>
                                 </a>
-
                                 <a
                                     href="/CurriculoEngenheiroAntonioDemarchi.pdf"
                                     download="CurriculoEngenheiroAntonioDemarchi.pdf"
-                                    onClick={() => trackCVDownload()}
+                                    onClick={() => trackCTAClick('Chamado', '/chamado')}
                                 >
                                     <Botao variant="secondary">
-                                        Resumo
+                                        Mensagem | Fale Comigo 
                                     </Botao>
                                 </a>
                             </div>
