@@ -146,7 +146,7 @@ export const Apresentacao = () => {
                                     onClick={() => trackCTAClick('Chamado', '/chamado')}
                                 >
                                     <Botao variant="secondary">
-                                        Mensagem | Fale Comigo 
+                                        Mensagem Fale Comigo 
                                     </Botao>
                                 </a>
                             </div>
