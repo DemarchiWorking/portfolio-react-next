@@ -160,7 +160,7 @@ export const Sobre = () => {
             image: "/desenho.png",
             linkRepo: "https://github.com/DemarchiWorking/toggle-master-microservice-kubernetes",
             linkLive: "#",
-            pdf: "/antonio_demarchi_PB_Engenharia_Disciplinada.pdf",
+            pdf: "/DevOps-Cloud.pdf",
             video: ""
         }
     ];
