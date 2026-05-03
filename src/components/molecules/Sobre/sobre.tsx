@@ -175,21 +175,6 @@ export const Sobre = () => {
     return (
         <section className="bg-white dark:bg-[#192328] py-16 md:py-24 transition-colors duration-300 overflow-hidden">
             <div className="container mx-auto px-6 max-w-7xl">
-            <div className='pb-8'>
-                <a
-                    href="/CurriculoEngenheiroAntonioDemarchi.pdf"
-                    download="CurriculoEngenheiroAntonioDemarchi.pdf"
-                    onClick={() => trackCVDownload()}
-                    className="block border-2 border-blue-600 rounded-lg p-2 transition-hover hover:bg-blue-50"
-                >
-                    <TimelineItem
-                        key="resumo"
-                        title="Resumo - Baixar Currículo"
-                        icon=""
-                        isLast={true}
-                    />
-                </a>
-            </div>
                 <div className="pt-4 pb-4"></div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
                     <div className="flex flex-col pr-0 lg:pr-10">
@@ -201,6 +186,21 @@ export const Sobre = () => {
                                 isLast={index === timelineData.length - 1}
                             />
                         ))}
+                         <div className='pb-8'>
+                            <a
+                                href="/CurriculoEngenheiroAntonioDemarchi.pdf"
+                                download="CurriculoEngenheiroAntonioDemarchi.pdf"
+                                onClick={() => trackCVDownload()}
+                                className="block border-2 border-blue-600 rounded-lg p-2 transition-hover hover:bg-blue-50"
+                            >
+                                <TimelineItem
+                                    key="resumo"
+                                    title="Resumo - Baixar Currículo"
+                                    icon=""
+                                    isLast={true}
+                                />
+                            </a>
+                        </div>
 
                         <div className="mt-2">
                             <section className="instituicoes-section flex flex-col items-center lg:items-start">
