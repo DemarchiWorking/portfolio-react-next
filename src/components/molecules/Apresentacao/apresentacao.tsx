@@ -142,26 +142,15 @@ export const Apresentacao = () => {
                                     </Botao>
                                 </a>
                                 <a
-                                    href="/chamado"
-                                    onClick={() => trackCTAClick('Chamado', '/chamado')}
+                                href="/chamado"
+                                onMouseEnter={() => setTextoBotao("Fale Comigo")}
+                                onMouseLeave={() => setTextoBotao("Mensagem")}
+                                onClick={() => trackCTAClick('Chamado', '/chamado')}
                                 >
-                                    <Botao variant="secondary">
-                                        Mensagem Fale Comigo 
-                                    </Botao>
+                                <Botao variant="secondary">
+                                    {textoBotao}
+                                </Botao>
                                 </a>
-
-                                ##
-<a
-  href="/chamado"
-  onMouseEnter={() => setTextoBotao("Fale Comigo")}
-  onMouseLeave={() => setTextoBotao("Mensagem")}
-  onClick={() => trackCTAClick('Chamado', '/chamado')}
->
-  <Botao variant="secondary">
-    {textoBotao}
-  </Botao>
-</a>
-                                ##
                             </div>
                         </motion.div>
                     <motion.div>
