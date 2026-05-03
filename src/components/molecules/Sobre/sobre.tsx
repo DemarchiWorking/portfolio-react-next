@@ -187,7 +187,7 @@ export const Sobre = () => {
                                 isLast={index === timelineData.length - 1}
                             />
                         ))}
-                         <div className="mt-8">
+                         <div className="mt-2">
                             <a
                                 href="/CurriculoEngenheiroAntonioDemarchi.pdf"
                                 download="CurriculoEngenheiroAntonioDemarchi.pdf"
